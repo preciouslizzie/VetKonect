@@ -30,6 +30,11 @@ class LoginController extends GetxController {
       return;
     }
 
+    Get.offAllNamed('/dashboard');
+
+    return;
+
+
     isLoading(true);
 
     try {

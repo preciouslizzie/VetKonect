@@ -43,7 +43,7 @@ class _OnbordingState extends State<Onbording> {
                   padding: const EdgeInsets.all(40),
                   child: Column(
                     children: [
-                      SvgPicture.asset(
+                      Image.asset(
                         contents[i].asset,
                         height: 300,
                       ),

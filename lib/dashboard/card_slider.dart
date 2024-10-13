@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vet_konect/config/assets.dart';
 
 class CardSliderWidget extends StatelessWidget {
   @override
@@ -7,9 +8,9 @@ class CardSliderWidget extends StatelessWidget {
       height: 200,
       child: PageView(
         children: [
-          _buildCard("Search for what you need", "Browse our platform to discover vets, vet clinics, and vendors around you.", "assets/images/search_icon.png"),
-          _buildCard("Find Vets", "Connect with veterinarians nearby.", "assets/images/pet_dull.png"),
-          _buildCard("Locate Vendors", "Find vendors for all your animal needs.", "assets/images/vet_clinic.png"),
+          _buildCard("Search for what you need", "Browse our platform to discover vets, vet clinics, and vendors around you.", Assets.imgSearch),
+          _buildCard("Find Vets", "Connect with veterinarians nearby.", Assets.imgPetCare),
+          _buildCard("Locate Vendors", "Find vendors for all your animal needs.", Assets.imgVetClinic),
         ],
       ),
     );

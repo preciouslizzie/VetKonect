@@ -1,4 +1,6 @@
 
+import 'package:vet_konect/config/assets.dart';
+
 class UnbordingContent {
   String asset;
   String title;
@@ -10,17 +12,17 @@ class UnbordingContent {
 List<UnbordingContent> contents = [
   UnbordingContent(
     title: 'Animal Health Professional',
-    asset: 'assets/images/animal_health.png',
+    asset: Assets.imgAnimalHealth,
     discription: "Easily connect with Veterinarians and Paraprofessionals near you. "
   ),
   UnbordingContent(
     title: 'Locate Veterinary Clinic',
-    asset: 'assets/images/vet_clinic.jpg',
+    asset: Assets.imgVetClinic,
     discription: "Access Veterinary clinics near you for your pets and livestock "
   ),
   UnbordingContent(
     title: 'Connect to Vendors',
-    asset: 'assets/images/pet_care.jpg',
+    asset: Assets.imgPetCare,
     discription: "Connect to a pool of vendors for all of your animal needs or sell easily. "
   ),
 ];

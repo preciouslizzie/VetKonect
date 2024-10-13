@@ -70,12 +70,11 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/pet_care.jpg
-    - assets/images/animal_health.png
-    - assets/images/vet_clinic.jpg
-    - assets/images/login_logo.png
-    - assets/images/pet_dull.png
-    - assets/images/search_icon.png
+    - assets/images/pet_care.jpeg
+    - assets/images/animal_health.jpeg
+    - assets/images/vet_clinic.jpeg
+    - assets/images/login_logo.jpeg
+    - assets/images/search_icon.jpeg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

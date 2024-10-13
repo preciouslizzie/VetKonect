@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vet_konect/config/assets.dart';
 
 class CustomScaffold extends StatelessWidget {
   const CustomScaffold({super.key, this.child});
@@ -15,7 +16,7 @@ class CustomScaffold extends StatelessWidget {
       body: Stack(
         children: [
           Image.asset(
-            'assets/images/login_logo.png',
+            Assets.imgLogin,
             fit: BoxFit.cover,
             width: double.infinity,
             height: 250,

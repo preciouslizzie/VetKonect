@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vet_konect/config/assets.dart';
 import 'package:vet_konect/dashboard/drawer_menu.dart';
 import '../login/login.dart';
 
@@ -16,11 +17,11 @@ class NavigationDrawer extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Image.asset('assets/images/login_logo.png', height: 50),
+                Image.asset(Assets.imgLogin, height: 50),
                 const Spacer(),
                 const CircleAvatar(
                   radius: 25,
-                  backgroundImage: AssetImage('assets/images/pet_dull.png'),
+                  backgroundImage: AssetImage(Assets.imgLogin),
                 ),
               ],
             ),

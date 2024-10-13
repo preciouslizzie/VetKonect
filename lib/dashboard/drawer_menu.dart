@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vet_konect/config/assets.dart';
 import 'package:vet_konect/dashboard/dashboard_page.dart';
 import 'package:vet_konect/feed_calculator/feed_calculator_screen.dart';
 import 'package:vet_konect/login/login.dart';
+import 'package:vet_konect/services/users.service.dart';
 import 'AccountsScreen.dart';
 import '../Drawer/drawer Menu/ActivitiesScreen.dart';
 import '../Drawer/drawer Menu/AdsPromotionScreen.dart';
@@ -16,6 +18,7 @@ import '../Drawer/drawer Menu/VendorScreen.dart'; // For navigation, if you're u
 class DrawerMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final user = Get.find<UsersService>();
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -28,12 +31,12 @@ class DrawerMenu extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset('assets/images/login_logo.png', height: 50), // App logo
+                  Image.asset(Assets.imgLogin, height: 50), // App logo
                   Spacer(),
                   // Profile image (optional)
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 25,
-                    backgroundImage: AssetImage('assets/images/profile.png'), // Replace with the correct profile image path
+                    backgroundImage: NetworkImage(user.user.value.avatar), // Replace with the correct profile image path
                   ),
                 ],
               ),
