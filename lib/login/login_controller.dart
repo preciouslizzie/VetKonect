@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:get/get.dart'hide Response;
+import 'package:get/get.dart' hide Response;
 import 'package:get_storage/get_storage.dart';
-import 'package:google_sign_in/google_sign_in.dart'; 
-import 'package:sign_in_with_apple/sign_in_with_apple.dart'; 
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginController extends GetxController {
   var email = ''.obs;
@@ -34,14 +34,13 @@ class LoginController extends GetxController {
 
     try {
       Response response = await dio.post('/login', data: {
-
         'email': email.value,
         'password': password.value,
       });
 
       if (response.statusCode == 200) {
         Get.snackbar('Success', 'Login Successful');
-        Get.offAllNamed('/homepage'); 
+        Get.offAllNamed('/dashboard');
 
         if (rememberMe.value) {
           box.write('email', email.value);
@@ -57,6 +56,10 @@ class LoginController extends GetxController {
       }
     } catch (e) {
       Get.snackbar('Error', 'Something went wrong');
+
+      print('error start here');
+      print('');
+      print(e);
     } finally {
       isLoading(false);
     }
@@ -67,10 +70,8 @@ class LoginController extends GetxController {
   }
 
   void forgetPassword() {
-    Get.toNamed('/forget-password'); 
+    Get.toNamed('/forget-password');
   }
-
-  
 
   Future<void> loginWithGoogle() async {
     try {
@@ -89,7 +90,10 @@ class LoginController extends GetxController {
   Future<void> loginWithApple() async {
     try {
       final credential = await SignInWithApple.getAppleIDCredential(
-        scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName
+        ],
       );
       await socialLogin('apple', credential.identityToken!);
     } catch (e) {
@@ -108,7 +112,7 @@ class LoginController extends GetxController {
 
       if (response.statusCode == 200) {
         Get.snackbar('Success', 'Login Successful');
-        Get.offAllNamed('/homepage');
+        Get.offAllNamed('/dashboard');
       } else {
         Get.snackbar('Error', 'Social login failed');
       }

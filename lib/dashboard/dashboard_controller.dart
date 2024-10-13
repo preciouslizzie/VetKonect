@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
-  // Use this controller to manage state for the dashboard
   var recentActivities = [].obs;
 
   @override
@@ -11,7 +10,6 @@ class DashboardController extends GetxController {
   }
 
   void fetchRecentActivities() {
-    // Fetch recent activities from backend or local storage
     recentActivities.addAll([
       {
         "title": "Deleted Vendor From...",

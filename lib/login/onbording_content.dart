@@ -15,12 +15,12 @@ List<UnbordingContent> contents = [
   ),
   UnbordingContent(
     title: 'Locate Veterinary Clinic',
-    asset: 'images/vet_clinic.jpg',
+    asset: 'assets/images/vet_clinic.jpg',
     discription: "Access Veterinary clinics near you for your pets and livestock "
   ),
   UnbordingContent(
     title: 'Connect to Vendors',
-    asset: 'images/pet_care.jpg',
+    asset: 'assets/images/pet_care.jpg',
     discription: "Connect to a pool of vendors for all of your animal needs or sell easily. "
   ),
 ];

@@ -10,16 +10,13 @@ import 'card_slider.dart';
 import 'recent_activity.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  int _currentIndex = 0;  // Track the selected tab index
-
-  // List of pages for navigation
+  int _currentIndex = 0;  
   final List<Widget> _pages = [
     DashboardScreen(),   
     SearchScreen(),         
@@ -28,7 +25,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     SettingsScreen(),       
   ];
 
-  // Handle tab change
+
   void _onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
@@ -72,7 +69,7 @@ class DashboardContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CardSliderWidget(), // Keep your existing widgets
+          CardSliderWidget(),
           const SizedBox(height: 20),
           const Text('Recent Activities',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
