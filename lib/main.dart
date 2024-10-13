@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: lightMode,
       debugShowCheckedModeBanner: false,
-      initialRoute: '/dashboard',
+      initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => Onbording()),
         GetPage(name: '/login', page: () => LoginScreen()),

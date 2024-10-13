@@ -72,11 +72,9 @@ class DashboardContent extends StatelessWidget {
         children: [
           CardSliderWidget(),
           const SizedBox(height: 20),
-          Obx(
-            () => Text(
-              'Recent Activities ${user.x.value}',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
+          const Text(
+            'Recent Activities',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           RecentActivityWidget(),
           const SizedBox(height: 20),
