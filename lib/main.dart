@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vet_konect/dashboard/dashboard_page.dart';
+import 'package:vet_konect/dashboard/dashborad_page/dashboard_page.dart';
 import 'package:vet_konect/login/login.dart';
 import 'package:vet_konect/services/users.service.dart';
 import 'package:vet_konect/sign_up/create_account%20_screen.dart';

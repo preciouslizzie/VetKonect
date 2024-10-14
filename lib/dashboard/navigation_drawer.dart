@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vet_konect/config/assets.dart';
-import 'package:vet_konect/dashboard/drawer_menu.dart';
+import 'package:vet_konect/dashboard/dashborad_page/drawer_menu.dart';
 import '../login/login.dart';
 
 class NavigationDrawer extends StatelessWidget {

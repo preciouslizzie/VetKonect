@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vet_konect/dashboard/dashboard_page.dart';
+import 'package:vet_konect/dashboard/dashborad_page/dashboard_page.dart';
 
 class SuccessAlertScreen extends StatelessWidget {
   const SuccessAlertScreen({super.key});

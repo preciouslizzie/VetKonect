@@ -69,7 +69,6 @@ class LoginController extends GetxController {
       isLoading(false);
     }
   }
-
   void toggleRememberMe() {
     rememberMe.value = !rememberMe.value;
   }

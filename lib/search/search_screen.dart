@@ -8,7 +8,7 @@ class SearchScreen extends StatelessWidget {
         title: Text('Search'),
       ),
       body: Center(
-        child: Text('This is the Dashboard Screen'),
+        child: Text('This is the Search Screen'),
       ),
     );
   }

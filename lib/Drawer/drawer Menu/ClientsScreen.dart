@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../dashboard/drawer_menu.dart';
+import '../../dashboard/dashborad_page/drawer_menu.dart';
 
 class ClientsScreen extends StatelessWidget {
   @override

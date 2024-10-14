@@ -38,8 +38,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
           label: 'Settings',
         ),
       ],
-      selectedItemColor: Colors.teal,  // Color for the selected item
-      unselectedItemColor: Colors.grey,  // Color for unselected items
+      selectedItemColor: Colors.teal,  
+      unselectedItemColor: Colors.grey,  
     );
   }
 }
