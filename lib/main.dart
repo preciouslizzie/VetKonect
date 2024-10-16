@@ -9,6 +9,8 @@ import 'blog/blog_screen.dart';
 import 'feed_calculator/feed_calculator_screen.dart';
 import 'login/onboarding_Screen.dart';
 import 'search/search_screen.dart';
+import 'setting/about_us.dart';
+import 'setting/profile_page.dart';
 import 'setting/setting_screen.dart';
 import 'theme/theme.dart';
 
@@ -35,7 +37,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/search', page: () => SearchScreen()),
         GetPage(name: '/blog', page: () => BlogPage()),
         GetPage(name: '/feed_calculator', page: () => FeedCalculatorScreen()),
-        GetPage(name: '/settings', page: () => SettingsScreen()),
+        GetPage(name: '/settings', page: () => SettingScreen()),
+        GetPage(name: '/profile', page: () => ProfilePage()),
+        GetPage(name: '/about', page: () => AboutPage()),
       ],
     );
   }

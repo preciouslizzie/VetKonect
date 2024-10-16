@@ -1,18 +1,101 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vet_konect/services/users.service.dart';
+import '../theme/theme.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final users = Get.find<UsersService>();
-
     return Scaffold(
+      backgroundColor: Colors.grey[200], 
       appBar: AppBar(
-        title: Text('Settings'),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.settings, color:lightColorScheme.primary),
+          onPressed: () {
+          },
+        ),
       ),
-      body: Center(
-        child: Text('Hello World'),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SettingsCard(
+              icon: Icons.person,
+              title: 'Profile',
+              iconColor: Colors.blue,
+              onTap: () {
+                Get.toNamed('/profile');
+              },
+            ),
+            const SizedBox(height: 10), 
+            SettingsCard(
+              icon: Icons.info,
+              title: 'About Us',
+              iconColor: Colors.pink,
+              onTap: () {
+                Get.toNamed('/about');
+              },
+            ),
+            const SizedBox(height: 10),
+            SettingsCard(
+              icon: Icons.logout,
+              title: 'Log Out',
+              iconColor: Colors.orange,
+              onTap: () {
+                Get.snackbar('Logged Out', 'You have successfully logged out.');
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SettingsCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+  final Color iconColor;
+
+  SettingsCard({required this.icon, required this.title, required this.onTap, required this.iconColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        elevation: 4, 
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15), 
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          child: Row(
+            children: [
+              // Icon with background circle
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: iconColor.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, size: 30, color: iconColor),
+              ),
+              SizedBox(width: 20),
+              // Title Text
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
