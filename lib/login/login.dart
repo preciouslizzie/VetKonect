@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-import '../sign_up/sign_up_screen.dart';
+import '../sign_up/sign_up_screen_1.dart';
 import '../theme/theme.dart';
 import 'customscaffold.dart';
 import 'login_controller.dart';
@@ -234,7 +234,7 @@ class _SignInScreenState extends State<LoginScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (e) => SignUpScreen(),
+                                  builder: (e) => ProffesionalScreen(),
                                 ),
                               );
                             },

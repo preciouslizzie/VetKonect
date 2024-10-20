@@ -1,21 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../theme/theme.dart';
-
 class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200], 
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.settings, color:lightColorScheme.primary),
-          onPressed: () {
-          },
-        ),
-      ),
+      backgroundColor: Colors.white, 
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -44,7 +33,7 @@ class SettingScreen extends StatelessWidget {
               title: 'Log Out',
               iconColor: Colors.orange,
               onTap: () {
-                Get.snackbar('Logged Out', 'You have successfully logged out.');
+                Get.toNamed('/login');
               },
             ),
           ],

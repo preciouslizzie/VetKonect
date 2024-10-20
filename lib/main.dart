@@ -8,7 +8,7 @@ import 'package:vet_konect/sign_up/sign_up_controller.dart';
 import 'blog/blog_screen.dart';
 import 'feed_calculator/feed_calculator_screen.dart';
 import 'login/onboarding_Screen.dart';
-import 'search/search_screen.dart';
+import 'Dasboard_Search/search/search_screen.dart';
 import 'setting/about_us.dart';
 import 'setting/profile_page.dart';
 import 'setting/setting_screen.dart';
