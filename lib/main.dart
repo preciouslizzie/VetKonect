@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vet_konect/Drawer/drawer%20Menu/Pets%20and%20livestock/PetsLivestockScreen.dart';
 import 'package:vet_konect/dashboard/dashborad_page/dashboard_page.dart';
 import 'package:vet_konect/login/login.dart';
 import 'package:vet_konect/services/users.service.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/settings', page: () => SettingScreen()),
         GetPage(name: '/profile', page: () => ProfilePage()),
         GetPage(name: '/about', page: () => AboutPage()),
+        GetPage(name: '/Pets-livestock', page: () => PetsLivestockScreen())
       ],
     );
   }
