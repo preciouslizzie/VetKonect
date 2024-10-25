@@ -3,7 +3,7 @@ import 'package:vet_konect/Drawer/drawer%20Menu/MyStoreScreen.dart';
 import 'package:vet_konect/dashboard/dashborad_page/drawer_menu.dart';
 import 'package:vet_konect/feed_calculator/feed_calculator_screen.dart';
 import 'package:vet_konect/Dasboard_Search/search/search_screen.dart';
-import 'package:vet_konect/setting/setting_screen.dart';
+import 'package:vet_konect/Drawer/drawer%20Menu/setting/setting_screen.dart';
 import '../../homepage/button_navigation.dart';
 import 'dashbord_content.dart';
 

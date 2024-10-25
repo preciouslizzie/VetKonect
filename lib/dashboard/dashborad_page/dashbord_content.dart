@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../services/users.service.dart';
+import '../../feed_calculator/services/users.service.dart';
 import '../card_slider.dart';
 import '../recent_activity/recent_activity.dart';
 import '../recent_activity/recent_activity_controller.dart';

@@ -4,7 +4,8 @@ import 'package:vet_konect/config/assets.dart';
 import 'package:vet_konect/dashboard/dashborad_page/dashboard_page.dart';
 import 'package:vet_konect/feed_calculator/feed_calculator_screen.dart';
 import 'package:vet_konect/login/login.dart';
-import 'package:vet_konect/services/users.service.dart';
+import 'package:vet_konect/feed_calculator/services/users.service.dart';
+import '../../Drawer/drawer Menu/web_view_controller.dart';
 import '../AccountsScreen.dart';
 import '../../Drawer/drawer Menu/ActivitiesScreen.dart';
 import '../../Drawer/drawer Menu/AdsPromotionScreen.dart';
@@ -64,7 +65,8 @@ class DrawerMenu extends StatelessWidget {
               Get.to(FeedCalculatorScreen());
             }),
             _buildDrawerItem(icon: Icons.local_hospital, text: 'Disease Predictor', onTap: () {
-              Get.to(DiseasePredictorScreen());
+              Get.to(() => const DiseasePredictorScreen(
+                ));
             }),
             _buildDrawerItem(icon: Icons.account_balance, text: 'Accounts', onTap: () {
               Get.to(AccountsScreen());
