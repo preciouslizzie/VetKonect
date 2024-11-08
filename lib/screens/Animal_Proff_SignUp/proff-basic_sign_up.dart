@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:vet_konect/features/customscaffold.dart';
+import 'package:vet_konect/screens/Animal_Proff_SignUp/sign_up_controller.dart';
 import 'package:vet_konect/config/theme.dart';
-import 'package:vet_konect/sign_up/User_Sign_up/user_controller.dart';
 
-class BasicUserSignUp extends StatefulWidget {
-  final UserTypeController signUpController = Get.put(UserTypeController());
+class ProffBasicSignUp extends StatefulWidget {
+  final ProffSignUpController signUpController = Get.put(ProffSignUpController());
   final RxBool isPasswordVisible = false.obs;
 
   @override
-  State<BasicUserSignUp> createState() => _BasicUserSignUpState();
+  State<ProffBasicSignUp> createState() => _ProffBasicSignUp();
 }
 
-class _BasicUserSignUpState extends State<BasicUserSignUp> {
+class _ProffBasicSignUp extends State<ProffBasicSignUp> {
   final _formSignInKey = GlobalKey<FormState>();
 
   @override
@@ -120,8 +121,8 @@ class _BasicUserSignUpState extends State<BasicUserSignUp> {
                               : ElevatedButton(
                                   onPressed: () {
                                     if (_formSignInKey.currentState!.validate()) {
-                                      widget.signUpController.setUserType;
-                                      Get.toNamed("/create-account");
+                                      widget.signUpController.signUp;
+                                      Get.toNamed("/Vet-account");
                                     }
                                   },
                                   child: const Text(
@@ -157,7 +158,30 @@ class _BasicUserSignUpState extends State<BasicUserSignUp> {
                           ),
                         ],
                       ),
-                      
+                      const SizedBox(height: 25.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                            icon: Logo(Logos.google),
+                            onPressed: () async {
+                              await widget.signUpController.loginWithGoogle();
+                            },
+                          ),
+                          IconButton(
+                            icon: Logo(Logos.linkedin),
+                            onPressed: () async {
+                              await widget.signUpController.loginWithLinkedIn();
+                            },
+                          ),
+                          // IconButton(
+                          //   icon: Logo(Logos.facebook_f),
+                          //   onPressed: () async {
+                          //     await widget.signUpController.loginWithFacebook();
+                          //   },
+                          // ),
+                        ],
+                      ),
                       const SizedBox(height: 25.0),
                     ],
                   ),

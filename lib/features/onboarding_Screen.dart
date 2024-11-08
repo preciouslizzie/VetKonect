@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:vet_konect/login/login_view.dart';
 import 'package:vet_konect/features/onbording_content.dart';
+import 'package:vet_konect/screens/login/login_view.dart';
 
 class Onbording extends StatefulWidget {
   @override
@@ -28,11 +28,11 @@ class _OnbordingState extends State<Onbording> {
   }
 
   void _startAutoSlide() {
-    _timer = Timer.periodic(Duration(seconds: 2), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 6), (Timer timer) {
       if (currentIndex < contents.length - 1) {
         currentIndex++;
         _controller.nextPage(
-          duration: Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 500),
           curve: Curves.easeInOut,
         );
       } else {
@@ -64,7 +64,7 @@ class _OnbordingState extends State<Onbording> {
                   },
                   child: const Text(
                     'Skip',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    style: TextStyle(fontSize: 22, color: Colors.green),
                   ),
                 ),
               ),

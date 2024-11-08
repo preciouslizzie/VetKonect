@@ -4,7 +4,7 @@ import 'package:vet_konect/config/assets.dart';
 import 'package:vet_konect/dashboard/dashborad_page/dashboard_page.dart';
 import 'package:vet_konect/feed_calculator/feed_calculator_screen.dart';
 import 'package:vet_konect/feed_calculator/services/users.service.dart';
-import 'package:vet_konect/login/login_view.dart';
+import 'package:vet_konect/screens/login/login_view.dart';
 import '../AccountsScreen.dart';
 import '../../core/drawer Menu/ActivitiesScreen.dart';
 import '../../core/drawer Menu/AdsPromotionScreen.dart';

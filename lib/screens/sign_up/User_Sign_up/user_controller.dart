@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class UserTypeController extends GetxController {
-  // Variable to hold the selected user type
   var selectedUserType = ''.obs;
   var selectedRole = ''.obs;
   var isLoading = false.obs;

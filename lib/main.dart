@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:vet_konect/core/drawer%20Menu/Pets%20and%20livestock/PetsLivestockScreen.dart';
 import 'package:vet_konect/dashboard/dashborad_page/dashboard_page.dart';
 import 'package:vet_konect/feed_calculator/services/users.service.dart';
-import 'package:vet_konect/login/login_view.dart';
-import 'package:vet_konect/sign_up/Animal_Proff_SignUp/sign_up_controller.dart';
-import 'package:vet_konect/sign_up/User_Sign_up/Basicuser_sign_up.dart';
-import 'package:vet_konect/sign_up/Animal_Proff_SignUp/proffesional_screen.dart';
-import 'package:vet_konect/sign_up/User_Sign_up/user_controller.dart';
+import 'package:vet_konect/screens/Animal_Proff_SignUp/sign_up_controller.dart';
+import 'package:vet_konect/screens/Animal_Proff_SignUp/proffesional_screen.dart';
+import 'package:vet_konect/screens/login/login_view.dart';
+import 'package:vet_konect/screens/sign_up/User_Sign_up/Basicuser_sign_up.dart';
+import 'package:vet_konect/screens/sign_up/User_Sign_up/animal_owner_createacount.dart';
 import 'blog/blog_screen.dart';
 import 'feed_calculator/feed_calculator_screen.dart';
 import 'features/onboarding_Screen.dart';
@@ -19,7 +19,6 @@ import 'config/theme.dart';
 
 void main() {
   Get.put(ProffSignUpController());
-  Get.put(UserTypeController());
 
   Get.put(UsersService());
 
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/', page: () => Onbording()),
         GetPage(name: '/login', page: () => LoginScreen()),
-        //GetPage(name: '/create-account', page: () => CreateAccountScreen()),
+        GetPage(name: '/create-account', page: () => AnimalOwnerAccount()),
         GetPage(name: '/dashboard', page: () => DashboardScreen()),
         GetPage(name: '/search', page: () => SearchScreen()),
         GetPage(name: '/blog', page: () => BlogPage()),

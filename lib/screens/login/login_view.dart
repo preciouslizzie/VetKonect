@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:vet_konect/config/theme.dart';
 import 'package:vet_konect/features/customscaffold.dart';
-import 'package:vet_konect/sign_up/sign_up.dart';
+import 'package:vet_konect/screens/sign_up/sign_up.dart';
 import 'login_controller.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -111,7 +111,7 @@ class _SignInScreenState extends State<LoginScreen> {
                             : ElevatedButton(
                                 onPressed: () {
                                   if (_formSignInKey.currentState!.validate()) {
-                                    widget.loginController.login();
+                                    widget.loginController.loginFunction();
                                   }
                                 },
                                 child: const Text(

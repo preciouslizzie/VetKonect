@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vet_konect/sign_up/Animal_Proff_SignUp/sign_up_controller.dart';
-import 'package:vet_konect/sign_up/sucess_alert_screen.dart';
+import 'package:vet_konect/screens/Animal_Proff_SignUp/sign_up_controller.dart';
+import 'package:vet_konect/screens/sign_up/sucess_alert_screen.dart';
+
 
 class ProfessionalDetailsScreen extends StatelessWidget {
   final ProffSignUpController signUpController = Get.find<ProffSignUpController>();
@@ -15,7 +16,7 @@ class ProfessionalDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Professional Details'),
+        title: const Text('Professional Details'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -40,20 +41,20 @@ class ProfessionalDetailsScreen extends StatelessWidget {
                 ),
                 keyboardType: TextInputType.phone,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               TextField(
                 controller: facebookController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Facebook Handle',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               TextField(
                 controller: twitterController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Twitter Handle',
                   border: OutlineInputBorder(),
                 ),

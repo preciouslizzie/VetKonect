@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vet_konect/login/login_controller.dart';
+import 'package:vet_konect/screens/login/login_controller.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
   final LoginController controller = Get.put(LoginController());

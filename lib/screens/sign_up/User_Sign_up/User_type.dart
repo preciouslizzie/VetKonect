@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vet_konect/sign_up/User_Sign_up/Basicuser_sign_up.dart';
-import 'package:vet_konect/sign_up/User_Sign_up/user_controller.dart';
+import 'package:vet_konect/screens/sign_up/User_Sign_up/Basicuser_sign_up.dart';
+import 'package:vet_konect/screens/sign_up/User_Sign_up/user_controller.dart';
 
 class UserTypeSelectionScreen extends StatelessWidget {
   final UserTypeController controller = Get.find<UserTypeController>();
