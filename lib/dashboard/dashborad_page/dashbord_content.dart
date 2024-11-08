@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../feed_calculator/services/users.service.dart';
 import '../card_slider.dart';
 import '../recent_activity/recent_activity.dart';
 import '../recent_activity/recent_activity_controller.dart';
@@ -12,7 +11,6 @@ class DashboardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(ActivityController());
 
-    final user = Get.find<UsersService>(); 
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),

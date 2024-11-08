@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'proffesional_controller.dart';
-import 'sign_up_screen_2.dart';
-import 'sign_up_screen_3.dart';
+import 'Animal_Proff_SignUp/Proffesional_type.dart';
+import 'User_Sign_up/User_type.dart';
 
-class ProffesionalScreen extends StatelessWidget {
-  final ProffesionalController controller = Get.put(ProffesionalController());
+class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {

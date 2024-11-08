@@ -3,18 +3,17 @@ import 'package:get/get.dart';
 import 'package:vet_konect/config/assets.dart';
 import 'package:vet_konect/dashboard/dashborad_page/dashboard_page.dart';
 import 'package:vet_konect/feed_calculator/feed_calculator_screen.dart';
-import 'package:vet_konect/login/login.dart';
 import 'package:vet_konect/feed_calculator/services/users.service.dart';
-import '../../Drawer/drawer Menu/web_view_controller.dart';
+import 'package:vet_konect/login/login_view.dart';
 import '../AccountsScreen.dart';
-import '../../Drawer/drawer Menu/ActivitiesScreen.dart';
-import '../../Drawer/drawer Menu/AdsPromotionScreen.dart';
-import '../../Drawer/drawer Menu/ChatForumScreen.dart';
-import '../../Drawer/drawer Menu/ClientsScreen.dart';
-import '../../Drawer/drawer Menu/DiseasePredictorScreen.dart';
-import '../../Drawer/drawer Menu/MyStoreScreen.dart';
-import '../../Drawer/drawer Menu/Pets and livestock/PetsLivestockScreen.dart';
-import '../../Drawer/drawer Menu/VendorScreen.dart'; // For navigation, if you're using GetX
+import '../../core/drawer Menu/ActivitiesScreen.dart';
+import '../../core/drawer Menu/AdsPromotionScreen.dart';
+import '../../core/drawer Menu/ChatForumScreen.dart';
+import '../../core/drawer Menu/ClientsScreen.dart';
+import '../../core/drawer Menu/DiseasePredictorScreen.dart';
+import '../../core/drawer Menu/MyStoreScreen.dart';
+import '../../core/drawer Menu/Pets and livestock/PetsLivestockScreen.dart';
+import '../../core/drawer Menu/VendorScreen.dart'; // For navigation, if you're using GetX
 
 class DrawerMenu extends StatelessWidget {
   @override
@@ -100,4 +99,6 @@ class DrawerMenu extends StatelessWidget {
       onTap: onTap,
     );
   }
+  
+  Icon(IconData icon, {required MaterialColor color}) {}
 }

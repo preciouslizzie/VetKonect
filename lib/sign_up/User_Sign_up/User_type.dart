@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'create_account _screen.dart';
-import 'proffesional_controller.dart';
+import 'package:vet_konect/sign_up/User_Sign_up/Basicuser_sign_up.dart';
+import 'package:vet_konect/sign_up/User_Sign_up/user_controller.dart';
 
 class UserTypeSelectionScreen extends StatelessWidget {
-  final ProffesionalController controller = Get.find<ProffesionalController>();
+  final UserTypeController controller = Get.find<UserTypeController>();
+
+   UserTypeSelectionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class UserTypeSelectionScreen extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 controller.setUserType('Livestock Owner');
-                Get.to(() => CreateAccountScreen());
+                Get.to(() => BasicUserSignUp());
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -59,7 +61,7 @@ class UserTypeSelectionScreen extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 controller.setUserType('Pet Owner');
-                Get.to(() => CreateAccountScreen());
+                Get.to(() => BasicUserSignUp());
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -92,7 +94,7 @@ class UserTypeSelectionScreen extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 controller.setUserType('Vendor');
-                Get.to(() => CreateAccountScreen());
+                Get.to(() => BasicUserSignUp());
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -125,7 +127,7 @@ class UserTypeSelectionScreen extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 controller.setUserType('Others');
-                Get.to(() => CreateAccountScreen());
+                Get.to(() => BasicUserSignUp());
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),

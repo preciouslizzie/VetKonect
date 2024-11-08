@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vet_konect/sign_up/Animal_Proff_SignUp/sign_up_controller.dart';
 import 'package:vet_konect/sign_up/sucess_alert_screen.dart';
-import 'sign_up_controller.dart';
 
 class ProfessionalDetailsScreen extends StatelessWidget {
-  final SignUpController signUpController = Get.find<SignUpController>();
+  final ProffSignUpController signUpController = Get.find<ProffSignUpController>();
 
   final TextEditingController licenseController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -25,16 +25,16 @@ class ProfessionalDetailsScreen extends StatelessWidget {
               
               TextField(
                 controller: licenseController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Practicing License Number',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               TextField(
                 controller: phoneController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Phone Number',
                   border: OutlineInputBorder(),
                 ),
@@ -73,12 +73,6 @@ class ProfessionalDetailsScreen extends StatelessWidget {
                     return;
                   }
 
-                  signUpController.saveProfessionalDetails(
-                    licenseNumber: licenseController.text.trim(),
-                    phoneNumber: phoneController.text.trim(),
-                    facebookHandle: facebookController.text.trim(),
-                    twitterHandle: twitterController.text.trim(),
-                  );
 
                   Get.to(() => SuccessAlertScreen());
                 },

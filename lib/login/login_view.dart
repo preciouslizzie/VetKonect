@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-import '../sign_up/sign_up_screen_1.dart';
-import '../theme/theme.dart';
-import 'customscaffold.dart';
+import 'package:vet_konect/config/theme.dart';
+import 'package:vet_konect/features/customscaffold.dart';
+import 'package:vet_konect/sign_up/sign_up.dart';
 import 'login_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   final LoginController loginController = Get.put(LoginController());
+  final RxBool isPasswordVisible = false.obs;
 
   @override
   State<LoginScreen> createState() => _SignInScreenState();
@@ -23,12 +24,10 @@ class _SignInScreenState extends State<LoginScreen> {
         children: [
           const Expanded(
             flex: 1,
-            child: SizedBox(
-              height: 10,
-            ),
+            child: SizedBox(height: 10),
           ),
           Expanded(
-            flex: 7,
+            flex: 5,
             child: Container(
               padding: const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 20.0),
               decoration: const BoxDecoration(
@@ -52,11 +51,9 @@ class _SignInScreenState extends State<LoginScreen> {
                           color: lightColorScheme.primary,
                         ),
                       ),
-                      const SizedBox(
-                        height: 40.0,
-                      ),
+                      const SizedBox(height: 40.0),
                       TextFormField(
-                        onChanged: (value) => widget.loginController.email.value = value, 
+                        onChanged: (value) => widget.loginController.email.value = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
@@ -66,30 +63,20 @@ class _SignInScreenState extends State<LoginScreen> {
                         decoration: InputDecoration(
                           label: const Text('Email'),
                           hintText: 'Enter Email',
-                          hintStyle: const TextStyle(
-                            color: Colors.black26,
-                          ),
+                          hintStyle: const TextStyle(color: Colors.black26),
                           border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12,
-                            ),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, 
-                            ),
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-                      TextFormField(
-                        obscureText: true,
+                      const SizedBox(height: 25.0),
+                      Obx(() => TextFormField(
+                        obscureText: !widget.isPasswordVisible.value,
                         obscuringCharacter: '*',
-                        onChanged: (value) => widget.loginController.password.value = value, 
+                        onChanged: (value) => widget.loginController.password.value = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Password';
@@ -99,83 +86,41 @@ class _SignInScreenState extends State<LoginScreen> {
                         decoration: InputDecoration(
                           label: const Text('Password'),
                           hintText: 'Enter Password',
-                          hintStyle: const TextStyle(
-                            color: Colors.black26,
-                          ),
+                          hintStyle: const TextStyle(color: Colors.black26),
                           border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color.fromARGB(31, 238, 87, 87),
-                            ),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              widget.isPasswordVisible.value
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                             ),
-                            borderRadius: BorderRadius.circular(10),
+                            onPressed: () {
+                              widget.isPasswordVisible.value = !widget.isPasswordVisible.value;
+                            },
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Obx(() => Checkbox(
-                                value: widget.loginController.rememberMe.value,
-                                onChanged: (bool? value) {
-                                  widget.loginController.rememberMe.value = value!;
-                                },
-                                activeColor: lightColorScheme.primary,
-                              )),
-                              const Text(
-                                'Remember me',
-                                style: TextStyle(
-                                  color: Colors.black45,
-                                ),
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                            child: Text(
-                              'Forget password?',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: lightColorScheme.primary,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-                      // Login button with loading indicator
+                      )),
+                      const SizedBox(height: 25.0),
+                      // Login Button
                       SizedBox(
                         width: double.infinity,
                         child: Obx(() => widget.loginController.isLoading.value
-                            ? CircularProgressIndicator() 
+                            ? const Center(child: CircularProgressIndicator())
                             : ElevatedButton(
                                 onPressed: () {
-                                  
                                   if (_formSignInKey.currentState!.validate()) {
-                                    widget.loginController.login(); 
+                                    widget.loginController.login();
                                   }
                                 },
                                 child: const Text(
                                   'Login',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 15),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                                 ),
-                              ),
-                        ),
+                              )),
                       ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
+                      const SizedBox(height: 25.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -186,15 +131,10 @@ class _SignInScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 0,
-                              horizontal: 10,
-                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 10),
                             child: Text(
-                              'Sign up with',
-                              style: TextStyle(
-                                color: Colors.black45,
-                              ),
+                              'or Sign up with',
+                              style: TextStyle(color: Colors.black45),
                             ),
                           ),
                           Expanded(
@@ -205,36 +145,46 @@ class _SignInScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
+                      const SizedBox(height: 25.0),
+                      // Social Media Login Buttons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Logo(Logos.facebook_f),
-                          Logo(Logos.twitter),
-                          Logo(Logos.google),
-                          Logo(Logos.apple),
+                          GestureDetector(
+                            onTap: () {
+                              widget.loginController.loginWithGoogle();
+                            },
+                            child: Logo(Logos.google),
+                          ),
+                          
+                          GestureDetector(
+                            onTap: () {
+                              widget.loginController.loginWithFacebook();
+                            },
+                            child: Logo(Logos.facebook_f),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              widget.loginController.loginWithLinkedIn();
+                            },
+                            child: Logo(Logos.linkedin),
+                          ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
+                      const SizedBox(height: 25.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
                             'Don\'t have an account? ',
-                            style: TextStyle(
-                              color: Colors.black45,
-                            ),
+                            style: TextStyle(color: Colors.black45),
                           ),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (e) => ProffesionalScreen(),
+                                  builder: (e) => SignUpScreen(),
                                 ),
                               );
                             },
@@ -248,9 +198,7 @@ class _SignInScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
+                      const SizedBox(height: 20.0),
                     ],
                   ),
                 ),

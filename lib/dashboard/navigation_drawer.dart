@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vet_konect/config/assets.dart';
 import 'package:vet_konect/dashboard/dashborad_page/drawer_menu.dart';
-import '../login/login.dart';
+import 'package:vet_konect/login/login_view.dart';
 
 class NavigationDrawer extends StatelessWidget {
   @override
@@ -46,4 +46,6 @@ class NavigationDrawer extends StatelessWidget {
       onTap: onTap,
     );
   }
+  
+  Icon(IconData icon, {required MaterialColor color}) {}
 }

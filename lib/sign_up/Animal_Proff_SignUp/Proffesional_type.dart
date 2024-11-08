@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'create_account _screen.dart';
-import 'proffesional_controller.dart';
+import 'package:vet_konect/sign_up/Animal_Proff_SignUp/proff-basic_sign_up.dart';
+import 'package:vet_konect/sign_up/Animal_Proff_SignUp/sign_up_controller.dart';
 
 class AnimalHealthProSelectionScreen extends StatelessWidget {
-  final ProffesionalController controller = Get.find<ProffesionalController>();
+  final ProffSignUpController controller = Get.find<ProffSignUpController>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,8 @@ class AnimalHealthProSelectionScreen extends StatelessWidget {
             const SizedBox(height: 40),
             GestureDetector(
               onTap: () {
-                controller.setProfessionalType('Veterinarian');
-                Get.to(() => CreateAccountScreen());
+                controller.signUp;
+                Get.to(() => ProffBasicSignUp());
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -58,8 +58,8 @@ class AnimalHealthProSelectionScreen extends StatelessWidget {
             // Pet Owner Button
             GestureDetector(
               onTap: () {
-                controller.setProfessionalType('Vet Paraprofessional');
-                Get.to(() => CreateAccountScreen());
+                controller.signUp;
+                Get.to(() => ProffBasicSignUp());
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
