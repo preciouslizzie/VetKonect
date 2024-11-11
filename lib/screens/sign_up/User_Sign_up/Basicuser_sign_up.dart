@@ -25,7 +25,7 @@ class _BasicUserSignUpState extends State<BasicUserSignUp> {
             child: SizedBox(height: 10),
           ),
           Expanded(
-            flex: 5,
+            flex: 3,
             child: Container(
               padding: const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 20.0),
               decoration: const BoxDecoration(

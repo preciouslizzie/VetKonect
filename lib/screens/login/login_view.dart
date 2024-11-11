@@ -11,11 +11,28 @@ class LoginScreen extends StatefulWidget {
   final RxBool isPasswordVisible = false.obs;
 
   @override
-  State<LoginScreen> createState() => _SignInScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignInScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formSignInKey = GlobalKey<FormState>();
+  final RxBool rememberMe = false.obs;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRememberMe();
+  }
+
+  Future<void> _loadRememberMe() async {
+    bool? storedRememberMe = await widget.loginController.loadRememberMe();
+    if (storedRememberMe != null) {
+      rememberMe.value = storedRememberMe;
+      if (storedRememberMe) {
+        widget.loginController.prefillEmailAndPassword();
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +44,7 @@ class _SignInScreenState extends State<LoginScreen> {
             child: SizedBox(height: 10),
           ),
           Expanded(
-            flex: 5,
+            flex: 3,
             child: Container(
               padding: const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 20.0),
               decoration: const BoxDecoration(
@@ -52,7 +69,9 @@ class _SignInScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 40.0),
-                      TextFormField(
+                      // Email Field
+                      Obx(() => TextFormField(
+                        initialValue: widget.loginController.email.value,
                         onChanged: (value) => widget.loginController.email.value = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -67,15 +86,13 @@ class _SignInScreenState extends State<LoginScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
                         ),
-                      ),
+                      )),
                       const SizedBox(height: 25.0),
+                      // Password Field
                       Obx(() => TextFormField(
+                        initialValue: widget.loginController.password.value,
                         obscureText: !widget.isPasswordVisible.value,
-                        obscuringCharacter: '*',
                         onChanged: (value) => widget.loginController.password.value = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -102,6 +119,37 @@ class _SignInScreenState extends State<LoginScreen> {
                           ),
                         ),
                       )),
+                      const SizedBox(height: 10.0),
+                      // Remember Me and Forgot Password Row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Obx(() => CheckboxListTile(
+                                contentPadding: EdgeInsets.zero,
+                                controlAffinity: ListTileControlAffinity.leading,
+                                value: rememberMe.value,
+                                onChanged: (value) {
+                                  rememberMe.value = value ?? false;
+                                  widget.loginController.saveRememberMe(rememberMe.value);
+                                },
+                                title: const Text('Remember me'),
+                              )),
+                          TextButton(
+                            onPressed: () {
+                              // Handle forget password logic
+                              Get.snackbar('Info', 'Forgot password functionality not implemented yet.');
+                            },
+                            child: const Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       const SizedBox(height: 25.0),
                       // Login Button
                       SizedBox(
@@ -121,6 +169,7 @@ class _SignInScreenState extends State<LoginScreen> {
                               )),
                       ),
                       const SizedBox(height: 25.0),
+                      // Divider and Social Media Options
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -154,24 +203,24 @@ class _SignInScreenState extends State<LoginScreen> {
                             onTap: () {
                               widget.loginController.loginWithGoogle();
                             },
-                            child: Logo(Logos.google),
+                            child: Logo(Logos.google, size: 40),
                           ),
-                          
                           GestureDetector(
                             onTap: () {
                               widget.loginController.loginWithFacebook();
                             },
-                            child: Logo(Logos.facebook_f),
+                            child: Logo(Logos.facebook_f, size: 40),
                           ),
                           GestureDetector(
                             onTap: () {
                               widget.loginController.loginWithLinkedIn();
                             },
-                            child: Logo(Logos.linkedin),
+                            child: Logo(Logos.linkedin, size: 40),
                           ),
                         ],
                       ),
                       const SizedBox(height: 25.0),
+                      // Sign Up Option
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

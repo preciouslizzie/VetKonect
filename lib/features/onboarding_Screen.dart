@@ -28,7 +28,7 @@ class _OnbordingState extends State<Onbording> {
   }
 
   void _startAutoSlide() {
-    _timer = Timer.periodic(const Duration(seconds: 6), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
       if (currentIndex < contents.length - 1) {
         currentIndex++;
         _controller.nextPage(

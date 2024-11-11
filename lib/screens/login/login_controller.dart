@@ -1,12 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:vet_konect/network%20folder/api_services.dart';
 
@@ -15,6 +16,9 @@ class LoginController extends GetxController {
   var password = ''.obs;
   var isLoading = false.obs;
   var rememberMe = false.obs;
+  var emailError = ''.obs;
+  var errorMessage = ''.obs;
+  var successMessage = ''.obs;
 
   Dio dio = Dio();
   final box = GetStorage();
@@ -29,50 +33,27 @@ class LoginController extends GetxController {
     }
   }
 
-  void login() async {
-    if (email.value.isEmpty || password.value.isEmpty) {
-      Get.snackbar('Error', 'Email and password cannot be empty.');
-      return;
-    }
-
-    isLoading(true);
-    try {
-      String loginUrl = 'https://vetkonect.com/backend/public/api/web/v2/login';
-      var response = await dio.get(loginUrl, queryParameters: {
-        'email': email.value,
-        'password': password.value,
-      });
-      print(response.toString());
-      if (response.statusCode == 200) {
-        Get.snackbar('Success', 'Login Successful');
-        Get.offAllNamed('/dashboard');
-
-        if (rememberMe.value) {
-          box.write('email', email.value);
-          box.write('password', password.value);
-          box.write('rememberMe', true);
-        } else {
-          box.remove('email');
-          box.remove('password');
-          box.write('rememberMe', false);
-        }
-      } else {
-        Get.snackbar('Error', 'Invalid credentials');
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Please check your network and try again');
-      print('Login error: $e');
-    } finally {
-      isLoading(false);
+  Future<void> saveRememberMe(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('rememberMe', value);
+    if (value) {
+      await prefs.setString('savedEmail', email.value);
+      await prefs.setString('savedPassword', password.value);
+    } else {
+      await prefs.remove('savedEmail');
+      await prefs.remove('savedPassword');
     }
   }
 
-  void toggleRememberMe() {
-    rememberMe.value = !rememberMe.value;
+  Future<bool?> loadRememberMe() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('rememberMe');
   }
 
-  void forgetPassword() {
-    Get.toNamed('/forget-password');
+  void prefillEmailAndPassword() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    email.value = prefs.getString('savedEmail') ?? '';
+    password.value = prefs.getString('savedPassword') ?? '';
   }
 
   // LinkedIn Login
@@ -149,31 +130,28 @@ class LoginController extends GetxController {
     }
     isLoading(true);
     try {
+      await Future.delayed(const Duration(seconds: 2));
       var response = await ApiService().post(
           'https://vetkonect.com/backend/public/api/web/v2/login',
           {"email": email.value, "password": password.value},
           Client(),
           "");
-      debugPrint(response.body);
-      if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      if (data['code'] == 200) {
         Get.snackbar('Success', 'Login Successful');
         Get.offAllNamed('/dashboard');
-        if (rememberMe.value) {
-          box.write('email', email.value);
-          box.write('password', password.value);
-          box.write('rememberMe', true);
-        } else {
-          box.remove('email');
-          box.remove('password');
-          box.write('rememberMe', false);
-        }
       } else {
-        Get.snackbar('Error', 'invalid Email or Password');
+        emailError.value = data['message'] ?? 'Login failed, Please try again';
       }
-
-      //  var decoded = UserModel.fromJson(json.decode(response.body));
+      successMessage.value =
+          'Password reset link has been sent to ${email.value}';
     } catch (e) {
-      Get.snackbar('Error', 'Please check your network and try again');
+      errorMessage.value =
+          'Failed to send password reset link, please try again';
+      emailError.value = 'Network Error, Check your connection and try again';
+      print('Login Error: $e');
+    } finally {
+      isLoading(false);
     }
   }
 

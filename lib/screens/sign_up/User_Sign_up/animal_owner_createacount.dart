@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vet_konect/dashboard/dashborad_page/dashboard_page.dart';
-import 'package:vet_konect/screens/sign_up/User_Sign_up/Basicuser_sign_up.dart';
+import 'package:get/get.dart';
+import 'package:vet_konect/dashboard/dashborad_page/dashboard_page.dart'; // Import your Dashboard page
 
 class AnimalOwnerAccount extends StatefulWidget {
   const AnimalOwnerAccount({super.key});
@@ -10,19 +10,15 @@ class AnimalOwnerAccount extends StatefulWidget {
 }
 
 class _AnimalOwnerAccountState extends State<AnimalOwnerAccount> {
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
-  String? selectedCategory;
-  String? selectedCountry;
-  String? selectedState;
+  String? _selectedCategory;
+  String? _selectedCountry;
+  bool _isAgreed = false;
 
-  // Checkboxes and options
-  bool isAgreed = false;
-
-  // Dropdown data
   final List<String> categories = [
     'Pet Owner',
     'Livestock Farmer',
@@ -32,7 +28,6 @@ class _AnimalOwnerAccountState extends State<AnimalOwnerAccount> {
   final List<String> africanCountries = [
     'Nigeria', 'Kenya', 'South Africa', 'Egypt', 'Ghana', 'Ethiopia', 'Morocco',
     'Algeria', 'Tanzania', 'Uganda'
-    // Add more African countries as needed
   ];
   final Map<String, List<String>> statesByCountry = {
     'Nigeria': ['Lagos', 'Abuja', 'Kano', 'Oyo'],
@@ -47,145 +42,144 @@ class _AnimalOwnerAccountState extends State<AnimalOwnerAccount> {
     'Uganda': ['Kampala', 'Entebbe'],
   };
 
+  void _proceedToProfile() {
+    if (_isAgreed) {
+      Get.to(() => DashboardScreen(), arguments: {
+        'firstName': _firstNameController.text,
+        'lastName': _lastNameController.text,
+        'phone': _phoneController.text,
+        'address': _addressController.text,
+        'category': _selectedCategory ?? 'Not selected',
+        'country': _selectedCountry ?? 'Not selected',
+      });
+    } else {
+      Get.snackbar(
+        'Notice',
+        'Please agree to the terms and conditions.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
+
+  InputDecoration _buildInputDecoration(String hint) {
+    return InputDecoration(
+      hintText: hint,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign Up'),
+        title: Text('Sign Up'),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
           children: [
             TextField(
-              controller: firstNameController,
-              decoration: const InputDecoration(labelText: 'First Name'),
+              controller: _firstNameController,
+              decoration: _buildInputDecoration('Enter your first name'),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             TextField(
-              controller: lastNameController,
-              decoration: const InputDecoration(labelText: 'Last Name'),
+              controller: _lastNameController,
+              decoration: _buildInputDecoration('Enter your last name'),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             TextField(
-              controller: phoneController,
-              decoration: const InputDecoration(labelText: 'Phone No.'),
+              controller: _phoneController,
+              decoration: _buildInputDecoration('Enter your phone number'),
               keyboardType: TextInputType.phone,
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             TextField(
-              controller: addressController,
-              decoration: const InputDecoration(labelText: 'Address'),
+              controller: _addressController,
+              decoration: _buildInputDecoration('Enter your address'),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             DropdownButtonFormField<String>(
-              decoration: const InputDecoration(labelText: 'Select Category'),
-              value: selectedCategory,
-              items: categories.map((String category) {
-                return DropdownMenuItem<String>(
+              decoration: _buildInputDecoration('Select Category'),
+              value: _selectedCategory,
+              items: categories.map((category) {
+                return DropdownMenuItem(
                   value: category,
                   child: Text(category),
                 );
               }).toList(),
               onChanged: (value) {
                 setState(() {
-                  selectedCategory = value;
+                  _selectedCategory = value;
                 });
               },
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             DropdownButtonFormField<String>(
-              decoration: const InputDecoration(labelText: 'Select Country'),
-              value: selectedCountry,
-              items: africanCountries.map((String country) {
-                return DropdownMenuItem<String>(
+              decoration: _buildInputDecoration('Select Country'),
+              value: _selectedCountry,
+              items: africanCountries.map((country) {
+                return DropdownMenuItem(
                   value: country,
                   child: Text(country),
                 );
               }).toList(),
               onChanged: (value) {
                 setState(() {
-                  selectedCountry = value;
-                  selectedState = null; // Reset state when country changes
+                  _selectedCountry = value;
                 });
               },
             ),
-            const SizedBox(height: 10),
-            if (selectedCountry != null)
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(labelText: 'Select State'),
-                value: selectedState,
-                items: statesByCountry[selectedCountry]!.map((String state) {
-                  return DropdownMenuItem<String>(
-                    value: state,
-                    child: Text(state),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedState = value;
-                  });
-                },
-              ),
-            const SizedBox(height: 20),
+            SizedBox(height: 10),
             Row(
               children: [
                 Checkbox(
-                  value: isAgreed,
-                  activeColor: Colors.green,
+                  value: _isAgreed,
                   onChanged: (value) {
                     setState(() {
-                      isAgreed = value!;
+                      _isAgreed = value!;
                     });
                   },
+                  activeColor: Colors.green,
                 ),
                 const Expanded(
                   child: Text(
                     'Confirm that you agree to our terms and conditions at Vet Konect',
-                    style: TextStyle(fontSize: 14),
                   ),
                 ),
               ],
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: isAgreed
-                  ? _handleProceed
-                  : null, // Only enabled when checkbox is checked
+              onPressed: _proceedToProfile,
+              child: Text('Proceed'),
               style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    isAgreed ? Theme.of(context).primaryColor : Colors.green,
-                padding: EdgeInsets.all(16),
+                backgroundColor: Colors.green, // Background color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
               ),
-              child: Center(child: Text('Proceed')),
             ),
             SizedBox(height: 10),
             OutlinedButton(
               onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => BasicUserSignUp()));
-                // Add logic for the back button if needed
+                Get.back(); // Using GetX to navigate back
               },
-              style: OutlinedButton.styleFrom(padding: EdgeInsets.all(16),
-              backgroundColor: Colors.orange),
-              child: Center(child: Text('Back')),
+              child: Text('Back'),
+              style: OutlinedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                side: BorderSide(color: Colors.orange),
+              ),
             ),
           ],
         ),
       ),
     );
   }
-
-  void _handleProceed() {
-    // Logic for proceeding to the user type controller
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            DashboardScreen() // Replace with actual navigation target
-      ),
-    );
-  }
 }
-
