@@ -13,6 +13,10 @@ class ProffSignUpController extends GetxController {
   var email = ''.obs;
   var password = ''.obs;
   var selectedImagePath = ''.obs;
+  var adrress = ''.obs;
+  var vetNumber = ''.obs;
+  var speciality = ''.obs;
+
   final ImagePicker _picker = ImagePicker();
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final String baseUrl = 'https://vetkonect.com/backend/public/api/web/v2';
@@ -235,3 +239,122 @@ Future<void> requestCameraPermission() async {
     Get.snackbar('Error', 'Camera permission denied');
   }
 }
+
+Future<void> registerVeterinarianStageOne() async {
+    isLoading(true);
+
+    try {
+      var response = await ApiService().post(
+        'https://vetkonect.com/backend/public/api/web/v2/registerVeterinarian',
+        {"stage": '1', 'email': email.value, "password": password.value},
+        Client(),
+        "",
+      );
+
+      debugPrint('Raw Response Body: ${response.body}');
+
+      var parsedResponse;
+      try {
+        parsedResponse = jsonDecode(response.body);
+      } catch (e) {
+        debugPrint('JSON Parsing Error: $e');
+        Get.snackbar('Error', 'Invalid server response format.');
+        return;
+      }
+
+      debugPrint('Parsed Response: $parsedResponse');
+
+      if (response.statusCode == 200 &&
+          parsedResponse is Map<String, dynamic>) {
+        if (parsedResponse['success'] == true ||
+            parsedResponse.containsKey('message')) {
+          Get.snackbar('Success',
+              parsedResponse['message'] ?? 'User type successfully set.');
+          Get.toNamed('/create-account');
+        } else {
+          String errorMessage = parsedResponse['message'] ??
+              'Failed to set user type. Please try again.';
+          Get.snackbar('Error', errorMessage);
+        }
+      } else if (response.statusCode == 409) {
+        String errorMessage =
+            parsedResponse['message'] ?? 'This email is already registered.';
+        Get.snackbar('Error', errorMessage);
+      } else {
+        String errorMessage = parsedResponse['detail'] ??
+            'Failed to set user type. Please check your input.';
+        Get.snackbar('Error', errorMessage);
+      }
+    } catch (e) {
+      debugPrint('Error calling the backend: $e');
+      Get.snackbar('Error', 'An error occurred. Please try again.');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+// Register Vetenarian Stage 2
+
+Future<void> registerVeterinarianStageTwo() async {
+    isLoading(true);
+
+    try {
+      var response = await ApiService().post(
+        'https://vetkonect.com/backend/public/api/web/v2/registerVeterinarian',
+        {
+          "stage": '2',
+          'email': email.value,
+          "first_name": firstName.value,
+          'last_name': lastName.value,
+          'phone_number': phoneNumber.value,
+          'address': adrress.value,
+          'vet_number': vetNumber,
+          'speciality[0]':
+          'speciality[1]':
+          'speciality[2]':
+          
+        },
+        Client(),
+        "",
+      );
+
+      debugPrint('Raw Response Body: ${response.body}');
+
+      var parsedResponse;
+      try {
+        parsedResponse = jsonDecode(response.body);
+      } catch (e) {
+        debugPrint('JSON Parsing Error: $e');
+        Get.snackbar('Error', 'Invalid server response format.');
+        return;
+      }
+
+      debugPrint('Parsed Response: $parsedResponse');
+
+      if (response.statusCode == 200 &&
+          parsedResponse is Map<String, dynamic>) {
+        if (parsedResponse['success'] == true ||
+            parsedResponse.containsKey('message')) {
+          Get.snackbar('Success',
+              parsedResponse['message'] ?? 'User type successfully set.');
+          Get.toNamed('/create-account');
+        } else {
+          String errorMessage = parsedResponse['message'] ??
+              'Failed to set user type. Please try again.';
+          Get.snackbar('Error', errorMessage);
+        }
+      } else if (response.statusCode == 409) {
+        String errorMessage =
+            parsedResponse['message'] ?? 'This email is already registered.';
+        Get.snackbar('Error', errorMessage);
+      } else {
+        String errorMessage = parsedResponse['detail'] ??
+            'Failed to set user type. Please check your input.';
+        Get.snackbar('Error', errorMessage);
+      }
+    } catch (e) {
+      debugPrint('Error calling the backend: $e');
+      Get.snackbar('Error', 'An error occurred. Please try again.');
+    } finally {
+      isLoading.value = false;
+    }
+  }

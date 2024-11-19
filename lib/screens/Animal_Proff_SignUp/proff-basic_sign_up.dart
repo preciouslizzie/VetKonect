@@ -122,7 +122,7 @@ class _ProffBasicSignUp extends State<ProffBasicSignUp> {
                                   onPressed: () {
                                     if (_formSignInKey.currentState!.validate()) {
                                       widget.signUpController.signUp;
-                                      Get.toNamed("/Vet-account");
+                                      Get.toNamed("/Success-Alert");
                                     }
                                   },
                                   child: const Text(

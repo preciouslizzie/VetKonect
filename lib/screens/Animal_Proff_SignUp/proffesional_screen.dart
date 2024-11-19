@@ -4,7 +4,7 @@ import 'package:vet_konect/screens/Animal_Proff_SignUp/sign_up_controller.dart';
 import 'package:vet_konect/screens/sign_up/sucess_alert_screen.dart';
 
 
-class ProfessionalDetailsScreen extends StatelessWidget {
+class VetCreateAcctScreen extends StatelessWidget {
   final ProffSignUpController signUpController = Get.find<ProffSignUpController>();
 
   final TextEditingController licenseController = TextEditingController();
@@ -75,7 +75,7 @@ class ProfessionalDetailsScreen extends StatelessWidget {
                   }
 
 
-                  Get.to(() => SuccessAlertScreen());
+                  Get.to(() => ProffBasicSignUp());
                 },
                 child: Text('Proceed'),
                 style: ElevatedButton.styleFrom(

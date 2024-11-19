@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vet_konect/dashboard/dashborad_page/dashboard_page.dart'; // Import your Dashboard page
+import 'package:vet_konect/dashboard/dashborad_page/dashboard_page.dart';
 
 class AnimalOwnerAccount extends StatefulWidget {
   const AnimalOwnerAccount({super.key});
@@ -15,47 +15,40 @@ class _AnimalOwnerAccountState extends State<AnimalOwnerAccount> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
-  String? _selectedCategory;
   String? _selectedCountry;
+  String? _selectedState;
+  String? _selectedCity;
   bool _isAgreed = false;
 
-  final List<String> categories = [
-    'Pet Owner',
-    'Livestock Farmer',
-    'Vendor',
-    'Others'
-  ];
-  final List<String> africanCountries = [
-    'Nigeria', 'Kenya', 'South Africa', 'Egypt', 'Ghana', 'Ethiopia', 'Morocco',
-    'Algeria', 'Tanzania', 'Uganda'
-  ];
-  final Map<String, List<String>> statesByCountry = {
-    'Nigeria': ['Lagos', 'Abuja', 'Kano', 'Oyo'],
-    'Kenya': ['Nairobi', 'Mombasa', 'Kisumu'],
-    'South Africa': ['Gauteng', 'Western Cape', 'KwaZulu-Natal'],
-    'Egypt': ['Cairo', 'Alexandria', 'Giza'],
-    'Ghana': ['Accra', 'Kumasi', 'Tamale'],
-    'Ethiopia': ['Addis Ababa', 'Dire Dawa'],
-    'Morocco': ['Rabat', 'Casablanca'],
-    'Algeria': ['Algiers', 'Oran'],
-    'Tanzania': ['Dar es Salaam', 'Dodoma'],
-    'Uganda': ['Kampala', 'Entebbe'],
-  };
-
-  void _proceedToProfile() {
-    if (_isAgreed) {
-      Get.to(() => DashboardScreen(), arguments: {
-        'firstName': _firstNameController.text,
-        'lastName': _lastNameController.text,
-        'phone': _phoneController.text,
-        'address': _addressController.text,
-        'category': _selectedCategory ?? 'Not selected',
-        'country': _selectedCountry ?? 'Not selected',
-      });
-    } else {
+  void _submitDetails() async {
+    if (!_isAgreed) {
       Get.snackbar(
         'Notice',
         'Please agree to the terms and conditions.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    final userDetails = {
+      'firstName': _firstNameController.text,
+      'lastName': _lastNameController.text,
+      'phone': _phoneController.text,
+      'address': _addressController.text,
+      'country': _selectedCountry ?? 'Not selected',
+      'state': _selectedState ?? 'Not selected',
+      'city': _selectedCity ?? 'Not selected',
+    };
+
+    try {
+      await registerAnimalOwnerStageTwo();
+      Get.to(() => DashboardScreen(), arguments: userDetails);
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'An error occurred: $e',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
@@ -67,7 +60,7 @@ class _AnimalOwnerAccountState extends State<AnimalOwnerAccount> {
     return InputDecoration(
       hintText: hint,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30.0),
+        borderRadius: BorderRadius.circular(20.0),
       ),
     );
   }
@@ -103,37 +96,27 @@ class _AnimalOwnerAccountState extends State<AnimalOwnerAccount> {
               decoration: _buildInputDecoration('Enter your address'),
             ),
             SizedBox(height: 10),
-            DropdownButtonFormField<String>(
-              decoration: _buildInputDecoration('Select Category'),
-              value: _selectedCategory,
-              items: categories.map((category) {
-                return DropdownMenuItem(
-                  value: category,
-                  child: Text(category),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _selectedCategory = value;
-                });
-              },
-            ),
-            SizedBox(height: 10),
-            DropdownButtonFormField<String>(
-              decoration: _buildInputDecoration('Select Country'),
-              value: _selectedCountry,
-              items: africanCountries.map((country) {
-                return DropdownMenuItem(
-                  value: country,
-                  child: Text(country),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _selectedCountry = value;
-                });
-              },
-            ),
+            SelectState(
+  onCountryChanged: (value) {
+    setState(() {
+      _selectedCountry = value;
+    });
+  },
+  onStateChanged: (value) {
+    setState(() {
+      _selectedState = value;
+    });
+  },
+  onCityChanged: (value) {
+    setState(() {
+      _selectedCity = value;
+    });
+  },
+  countryDecoration: _buildInputDecoration('Select Country'),
+  stateDecoration: _buildInputDecoration('Select State'),
+  cityDecoration: _buildInputDecoration('Select City'),
+),
+
             SizedBox(height: 10),
             Row(
               children: [
@@ -155,12 +138,12 @@ class _AnimalOwnerAccountState extends State<AnimalOwnerAccount> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _proceedToProfile,
+              onPressed: _submitDetails,
               child: Text('Proceed'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green, // Background color
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
             ),

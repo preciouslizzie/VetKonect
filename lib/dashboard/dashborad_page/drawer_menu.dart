@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vet_konect/config/assets.dart';
-import 'package:vet_konect/core/drawer%20Menu/DiseasePredictorScreen.dart';
-import 'package:vet_konect/core/drawer%20Menu/home_page.dart';
+import 'package:vet_konect/core/Animal_Owner%20Menu/DiseasePredictorScreen.dart';
+import 'package:vet_konect/core/Animal_Owner%20Menu/home_page.dart';
+import 'package:vet_konect/core/Animal_Owner%20Menu/pets_and_livestoc.dart';
 import 'package:vet_konect/dashboard/dashborad_page/dashboard_page.dart';
 import 'package:vet_konect/feed_calculator/feed_calculator_screen.dart';
 import 'package:vet_konect/feed_calculator/services/users.service.dart';
 import 'package:vet_konect/screens/login/login_view.dart';
 import '../AccountsScreen.dart';
-import '../../core/drawer Menu/ActivitiesScreen.dart';
-import '../../core/drawer Menu/AdsPromotionScreen.dart';
-import '../../core/drawer Menu/ChatForumScreen.dart';
-import '../../core/drawer Menu/ClientsScreen.dart';
-import '../../core/drawer Menu/MyStoreScreen.dart';
-import '../../core/drawer Menu/Pets and livestock/PetsLivestockScreen.dart';
-import '../../core/drawer Menu/VendorScreen.dart';
+import '../../core/Animal_Owner Menu/ActivitiesScreen.dart';
+import '../../core/Animal_Owner Menu/AdsPromotionScreen.dart';
+import '../../core/Animal_Owner Menu/ChatForumScreen.dart';
+import '../../core/Animal_Owner Menu/ClientsScreen.dart';
+import '../../core/Animal_Owner Menu/MyStoreScreen.dart';
+import '../../core/Animal_Owner Menu/VendorScreen.dart';
 
 class DrawerMenu extends StatefulWidget {
   @override

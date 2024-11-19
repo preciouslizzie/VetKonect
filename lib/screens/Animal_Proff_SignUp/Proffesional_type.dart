@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vet_konect/screens/Animal_Proff_SignUp/proff-basic_sign_up.dart';
+import 'package:vet_konect/screens/Animal_Proff_SignUp/proffesional_screen.dart';
 import 'package:vet_konect/screens/Animal_Proff_SignUp/sign_up_controller.dart';
 
 class AnimalHealthProSelectionScreen extends StatelessWidget {
@@ -25,8 +26,8 @@ class AnimalHealthProSelectionScreen extends StatelessWidget {
             const SizedBox(height: 40),
             GestureDetector(
               onTap: () {
-                controller.signUp;
-                Get.to(() => ProffBasicSignUp());
+                controller.registerVeterinarianStageOne();
+                Get.to(() => VetCreateAcctScreen());
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -58,8 +59,8 @@ class AnimalHealthProSelectionScreen extends StatelessWidget {
             // Pet Owner Button
             GestureDetector(
               onTap: () {
-                controller.signUp;
-                Get.to(() => ProffBasicSignUp());
+                controller.registerVeterinarianStageOne();
+                Get.to(() => VetCreateAcctScreen());
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),

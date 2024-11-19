@@ -26,7 +26,7 @@ class SignUpScreen extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                userTypeController.setUserType('');
+                userTypeController.setUserType('', '');
                 Get.to(() => UserTypeSelectionScreen());
               },
               child: Container(
@@ -44,7 +44,7 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     SizedBox(width: 20),
                     Text(
-                      'User',
+                      'Animal Owner',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -58,7 +58,7 @@ class SignUpScreen extends StatelessWidget {
             const SizedBox(height: 30),
             GestureDetector(
               onTap: () {
-                userTypeController.setUserType('');
+                userTypeController.setUserType('', '');
                 Get.to(() => AnimalHealthProSelectionScreen());
               },
               child: Container(

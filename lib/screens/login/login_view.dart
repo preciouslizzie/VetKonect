@@ -122,18 +122,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 10.0),
                       // Remember Me and Forgot Password Row
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Obx(() => CheckboxListTile(
-                                contentPadding: EdgeInsets.zero,
-                                controlAffinity: ListTileControlAffinity.leading,
-                                value: rememberMe.value,
-                                onChanged: (value) {
-                                  rememberMe.value = value ?? false;
-                                  widget.loginController.saveRememberMe(rememberMe.value);
-                                },
-                                title: const Text('Remember me'),
-                              )),
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Obx(() => Checkbox(
+              value: rememberMe.value,
+              onChanged: (value) {
+                rememberMe.value = value ?? false;
+                widget.loginController.saveRememberMe(rememberMe.value);
+              },
+            )),
+        const Text('Remember me'),
+  ],
+),
                           TextButton(
                             onPressed: () {
                               // Handle forget password logic
@@ -196,29 +199,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 25.0),
                       // Social Media Login Buttons
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              widget.loginController.loginWithGoogle();
-                            },
-                            child: Logo(Logos.google, size: 40),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              widget.loginController.loginWithFacebook();
-                            },
-                            child: Logo(Logos.facebook_f, size: 40),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              widget.loginController.loginWithLinkedIn();
-                            },
-                            child: Logo(Logos.linkedin, size: 40),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //   children: [
+                      //     GestureDetector(
+                      //       onTap: () {
+                      //         widget.loginController.loginWithGoogle();
+                      //       },
+                      //       child: Logo(Logos.google, size: 40),
+                      //     ),
+                      //     GestureDetector(
+                      //       onTap: () {
+                      //         widget.loginController.loginWithFacebook();
+                      //       },
+                      //       child: Logo(Logos.facebook_f, size: 40),
+                      //     ),
+                      //     GestureDetector(
+                      //       onTap: () {
+                      //         widget.loginController.loginWithLinkedIn();
+                      //       },
+                      //       child: Logo(Logos.linkedin, size: 40),
+                      //     ),
+                      //   ],
+                      // ),
                       const SizedBox(height: 25.0),
                       // Sign Up Option
                       Row(

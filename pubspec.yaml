@@ -36,7 +36,7 @@ dependencies:
   flutter_webview_plugin: ^0.4.0
   flutter_secure_storage: ^8.1.0
   connectivity_plus: ^3.0.3
-
+  country_state_city_picker: ^1.0.0
 
 
 

@@ -27,7 +27,7 @@ class UserTypeSelectionScreen extends StatelessWidget {
             const SizedBox(height: 40),
             GestureDetector(
               onTap: () {
-                controller.setUserType('Livestock Owner');
+                controller.registerAnimalOwnerStageOne();
                 Get.to(() => BasicUserSignUp());
               },
               child: Container(
@@ -60,7 +60,7 @@ class UserTypeSelectionScreen extends StatelessWidget {
             // Pet Owner Button
             GestureDetector(
               onTap: () {
-                controller.setUserType('Pet Owner');
+                controller.registerAnimalOwnerStageOne();
                 Get.to(() => BasicUserSignUp());
               },
               child: Container(
@@ -93,7 +93,7 @@ class UserTypeSelectionScreen extends StatelessWidget {
             
             GestureDetector(
               onTap: () {
-                controller.setUserType('Vendor');
+                controller.registerAnimalOwnerStageOne();
                 Get.to(() => BasicUserSignUp());
               },
               child: Container(
@@ -126,7 +126,7 @@ class UserTypeSelectionScreen extends StatelessWidget {
             // Others Button
             GestureDetector(
               onTap: () {
-                controller.setUserType('Others');
+                controller.registerAnimalOwnerStageOne();
                 Get.to(() => BasicUserSignUp());
               },
               child: Container(
