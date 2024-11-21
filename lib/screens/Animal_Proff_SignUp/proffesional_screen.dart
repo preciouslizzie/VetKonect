@@ -3,12 +3,9 @@ import 'package:get/get.dart';
 import 'package:vet_konect/screens/Animal_Proff_SignUp/sign_up_controller.dart';
 import 'package:vet_konect/screens/sign_up/sucess_alert_screen.dart';
 
-
 class VetCreateAcctScreen extends StatelessWidget {
   final ProffSignUpController signUpController = Get.find<ProffSignUpController>();
 
-  final TextEditingController licenseController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
   final TextEditingController facebookController = TextEditingController();
   final TextEditingController twitterController = TextEditingController();
 
@@ -23,9 +20,8 @@ class VetCreateAcctScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              
               TextField(
-                controller: licenseController,
+                onChanged: (value) => signUpController.vetNumber.value = value,
                 decoration: const InputDecoration(
                   labelText: 'Practicing License Number',
                   border: OutlineInputBorder(),
@@ -34,7 +30,7 @@ class VetCreateAcctScreen extends StatelessWidget {
               const SizedBox(height: 16),
 
               TextField(
-                controller: phoneController,
+                onChanged: (value) => signUpController.phoneNumber.value = value,
                 decoration: const InputDecoration(
                   labelText: 'Phone Number',
                   border: OutlineInputBorder(),
@@ -59,36 +55,49 @@ class VetCreateAcctScreen extends StatelessWidget {
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
 
-              ElevatedButton(
-                onPressed: () {
-                  if (licenseController.text.isEmpty || phoneController.text.isEmpty) {
-                    Get.snackbar(
-                      'Error',
-                      'Please fill all required fields',
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.redAccent,
-                      colorText: Colors.white,
-                    );
-                    return;
-                  }
+              Obx(
+                    () => signUpController.isLoading.value
+                    ? const Center(child: CircularProgressIndicator())
+                    : ElevatedButton(
+                  onPressed: () async {
+                    if (signUpController.vetNumber.value.isEmpty ||
+                        signUpController.phoneNumber.value.isEmpty) {
+                      Get.snackbar(
+                        'Error',
+                        'Please fill all required fields',
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.redAccent,
+                        colorText: Colors.white,
+                      );
+                      return;
+                    }
 
+                    // Call Stage Two Sign-Up Method
+                    await signUpController.registerVeterinarianStageTwo();
 
-                  Get.to(() => ProffBasicSignUp());
-                },
-                child: Text('Proceed'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
+                    // Navigate to Success Screen on Success
+                    if (!signUpController.isLoading.value) {
+                      Get.to(() => SuccessAlertScreen());
+                    }
+                  },
+                  child: const Text(
+                    'Proceed',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               TextButton(
                 onPressed: () {
                   Get.back();
                 },
-                child: Text('Back'),
+                child: const Text('Back'),
               ),
             ],
           ),

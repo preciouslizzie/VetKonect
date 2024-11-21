@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:vet_konect/features/customscaffold.dart';
 import 'package:vet_konect/screens/Animal_Proff_SignUp/sign_up_controller.dart';
 import 'package:vet_konect/config/theme.dart';
@@ -75,13 +74,16 @@ class _ProffBasicSignUp extends State<ProffBasicSignUp> {
                       ),
                       const SizedBox(height: 25.0),
                       Obx(
-                        () => TextFormField(
+                            () => TextFormField(
                           obscureText: !widget.isPasswordVisible.value,
                           obscuringCharacter: '*',
                           onChanged: (value) => widget.signUpController.password.value = value,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter Password';
+                            }
+                            if (value.length < 6) {
+                              return 'Password must be at least 6 characters long';
                             }
                             return null;
                           },
@@ -116,21 +118,21 @@ class _ProffBasicSignUp extends State<ProffBasicSignUp> {
                       SizedBox(
                         width: double.infinity,
                         child: Obx(
-                          () => widget.signUpController.isLoading.value
+                              () => widget.signUpController.isLoading.value
                               ? const Center(child: CircularProgressIndicator())
                               : ElevatedButton(
-                                  onPressed: () {
-                                    if (_formSignInKey.currentState!.validate()) {
-                                      widget.signUpController.signUp;
-                                      Get.toNamed("/Success-Alert");
-                                    }
-                                  },
-                                  child: const Text(
-                                    'Sign Up',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold, fontSize: 15),
-                                  ),
-                                ),
+                            onPressed: () {
+                              if (_formSignInKey.currentState!.validate()) {
+                                // Call the Stage One Sign-Up Method
+                                widget.signUpController.registerVeterinarianStageOne();
+                              }
+                            },
+                            child: const Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 25.0),
@@ -158,31 +160,6 @@ class _ProffBasicSignUp extends State<ProffBasicSignUp> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 25.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          IconButton(
-                            icon: Logo(Logos.google),
-                            onPressed: () async {
-                              await widget.signUpController.loginWithGoogle();
-                            },
-                          ),
-                          IconButton(
-                            icon: Logo(Logos.linkedin),
-                            onPressed: () async {
-                              await widget.signUpController.loginWithLinkedIn();
-                            },
-                          ),
-                          // IconButton(
-                          //   icon: Logo(Logos.facebook_f),
-                          //   onPressed: () async {
-                          //     await widget.signUpController.loginWithFacebook();
-                          //   },
-                          // ),
-                        ],
-                      ),
-                      const SizedBox(height: 25.0),
                     ],
                   ),
                 ),

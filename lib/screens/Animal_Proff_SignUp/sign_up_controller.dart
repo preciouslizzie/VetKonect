@@ -1,360 +1,127 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'proffesional_screen.dart';
 
 class ProffSignUpController extends GetxController {
-  var selectedRole = ''.obs;
   var isLoading = false.obs;
   var email = ''.obs;
   var password = ''.obs;
-  var selectedImagePath = ''.obs;
-  var adrress = ''.obs;
+  var firstName = ''.obs;
+  var lastName = ''.obs;
+  var phoneNumber = ''.obs;
+  var address = ''.obs;
   var vetNumber = ''.obs;
-  var speciality = ''.obs;
+  var specialties = <String>[].obs;
 
-  final ImagePicker _picker = ImagePicker();
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
   final String baseUrl = 'https://vetkonect.com/backend/public/api/web/v2';
 
-  // Multi-Stage Sign-Up Process
-  void signUp(
-    String email,
-    String password,
-    String confirmPassword,
-    String firstName,
-    String lastName,
-    String phoneNumber,
-    String address,
-    String vetNumber,
-    List<String> specialties,
-  ) async {
-    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-      _showSnackbar('Error', 'Please fill all fields');
-      return;
-    }
-
-    if (!GetUtils.isEmail(email)) {
-      _showSnackbar('Error', 'Please enter a valid email address');
-      return;
-    }
-
-    if (password.length < 6) {
-      _showSnackbar('Error', 'Password should be at least 6 characters');
-      return;
-    }
-
-    if (password != confirmPassword) {
-      _showSnackbar('Error', 'Passwords do not match');
-      return;
-    }
-
+  // Stage 1: Register veterinarian - Email and Password
+  Future<void> registerVeterinarianStageOne() async {
     isLoading.value = true;
 
     try {
-      var stage1Response = await http.post(
+      var response = await http.post(
         Uri.parse('$baseUrl/registerVeterinarian?stage=1'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'email': email, 'password': password}),
+        body: jsonEncode({
+          'email': email.value,
+          'password': password.value,
+        }),
       );
 
-      if (stage1Response.statusCode != 200) {
-        _showSnackbar('Error', 'Signup failed at stage 1. Please check your email and password.');
-        return;
+      if (response.statusCode == 200) {
+        Get.snackbar('Success', 'Stage 1 completed. Proceed to Stage 2.',
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
+      } else {
+        var errorMessage = _parseError(response);
+        Get.snackbar('Error', errorMessage,
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
       }
+    } catch (e) {
+      Get.snackbar('Error', 'An error occurred during Stage 1. Please try again.',
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
-      // Stage 2: Additional details
-      var stage2Response = await http.post(
-        Uri.parse('$baseUrl/registerVeterinarian?stage=2'),;
+  // Stage 2: Register veterinarian - Additional details
+  Future<void> registerVeterinarianStageTwo() async {
+    isLoading.value = true;
+
+    try {
+      var response = await http.post(
+        Uri.parse('$baseUrl/registerVeterinarian?stage=2'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'email': email,
-          'first_name': firstName,
-          'last_name': lastName,
-          'phone_number': phoneNumber,
-          'address': address,
-          'vet_number': vetNumber,
+          'email': email.value,
+          'first_name': firstName.value,
+          'last_name': lastName.value,
+          'phone_number': phoneNumber.value,
+          'address': address.value,
+          'vet_number': vetNumber.value,
           'speciality': specialties,
         }),
       );
 
-      if (stage2Response.statusCode != 200) {
-        _showSnackbar('Error', 'Signup failed at stage 2. Please check your information.');
-        return;
+      if (response.statusCode == 200) {
+        Get.snackbar('Success', 'Stage 2 completed. Proceed to Stage 3.',
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
+      } else {
+        var errorMessage = _parseError(response);
+        Get.snackbar('Error', errorMessage,
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
       }
+    } catch (e) {
+      Get.snackbar('Error', 'An error occurred during Stage 2. Please try again.',
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
-      // Request activation code from user
-      String activationCode = await _promptForActivationCode();
+  // Stage 3: Register veterinarian - Activation code verification
+  Future<void> registerVeterinarianStageThree(String activationCode) async {
+    isLoading.value = true;
 
-      // Stage 3: Verification
-      var stage3Response = await http.post(
+    try {
+      var response = await http.post(
         Uri.parse('$baseUrl/registerVeterinarian?stage=3'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'email': email,
+          'email': email.value,
           'activation_code': activationCode,
         }),
       );
 
-      if (stage3Response.statusCode == 200) {
-        Get.to(() => ProfessionalDetailsScreen());
-      } else {
-        _showSnackbar('Error', 'Signup failed at stage 3. Incorrect activation code.');
-      }
-    } catch (e) {
-      _showSnackbar('Error', 'Sign up failed. Please try again.');
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  Future<String> _promptForActivationCode() async {
-    String? activationCode = await Get.defaultDialog<String>(
-      title: "Enter Activation Code",
-      content: TextField(
-        onSubmitted: (value) {
-          Get.back(result: value);
-        },
-        decoration: InputDecoration(labelText: "Activation Code"),
-      ),
-    );
-    return activationCode ?? '';
-  }
-
-  void _showSnackbar(String title, String message) {
-    Get.snackbar(
-      title,
-      message,
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.redAccent,
-      colorText: Colors.white,
-    );
-  }
-
-  // Google Login
-  Future<void> loginWithGoogle() async {
-    try {
-      isLoading.value = true;
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-
-      if (googleUser == null) {
-        _showSnackbar('Error', 'Google sign-in cancelled');
-        return;
-      }
-
-      final response = await http.get(
-        Uri.parse('$baseUrl/google/loginUsingGoogle?email=${googleUser.email}'),
-      );
-
       if (response.statusCode == 200) {
-        Get.to(() => ProfessionalDetailsScreen());
+        Get.snackbar('Success', 'Registration completed!',
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
+        Get.toNamed('/create-account');
       } else {
-        _showSnackbar('Error', 'Failed to login with Google');
+        var errorMessage = _parseError(response);
+        Get.snackbar('Error', errorMessage,
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
       }
     } catch (e) {
-      _showSnackbar('Error', 'Google login failed. Please try again.');
+      Get.snackbar('Error', 'An error occurred during Stage 3. Please try again.',
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
     } finally {
       isLoading.value = false;
     }
   }
 
-  // LinkedIn Login
-  Future<void> loginWithLinkedIn() async {
+  // Utility: Parse error from server response
+  String _parseError(http.Response response) {
     try {
-      isLoading.value = true;
-      
-      final response = await http.get(Uri.parse('$baseUrl/linkedin/loginUsingLinkedin'));
-
-      if (response.statusCode == 200) {
-        Get.to(() => ProfessionalDetailsScreen());
-      } else {
-        _showSnackbar('Error', 'Failed to login with LinkedIn');
+      var parsedResponse = jsonDecode(response.body);
+      if (parsedResponse is Map<String, dynamic> && parsedResponse.containsKey('message')) {
+        return parsedResponse['message'];
       }
     } catch (e) {
-      _showSnackbar('Error', 'LinkedIn login failed. Please try again.');
-    } finally {
-      isLoading.value = false;
+      debugPrint('Error parsing server response: $e');
     }
-  }
-
-  // Facebook Login
-  
-  // Image Selection and Upload
-  void pickImage(ImageSource imageSource) async {
-    final XFile? pickedFile = await _picker.pickImage(source: imageSource);
-
-    if (pickedFile != null) {
-      selectedImagePath.value = pickedFile.path;
-      await uploadProfileImage(pickedFile);
-    } else {
-      _showSnackbar("Error", "No image selected");
-    }
-  }
-
-  Future<void> uploadProfileImage(XFile imageFile) async {
-    isLoading.value = true;
-
-    try {
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse('$baseUrl/upload-profile-image'),
-      );
-      request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
-
-      var response = await request.send();
-
-      if (response.statusCode == 200) {
-        Get.snackbar(
-          'Success',
-          'Profile image uploaded successfully',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
-      } else {
-        _showSnackbar('Error', 'Failed to upload image');
-      }
-    } catch (e) {
-      _showSnackbar('Error', 'Image upload failed. Please try again.');
-    } finally {
-      isLoading.value = false;
-    }
+    return 'An unexpected error occurred. Please try again.';
   }
 }
-
-class FacebookAuth {
-}
-
-// Camera Permission Handling
-Future<void> requestCameraPermission() async {
-  PermissionStatus status = await Permission.camera.request();
-
-  if (status.isGranted) {
-    Get.snackbar('Success', 'Camera permission granted');
-  } else {
-    Get.snackbar('Error', 'Camera permission denied');
-  }
-}
-
-Future<void> registerVeterinarianStageOne() async {
-    isLoading(true);
-
-    try {
-      var response = await ApiService().post(
-        'https://vetkonect.com/backend/public/api/web/v2/registerVeterinarian',
-        {"stage": '1', 'email': email.value, "password": password.value},
-        Client(),
-        "",
-      );
-
-      debugPrint('Raw Response Body: ${response.body}');
-
-      var parsedResponse;
-      try {
-        parsedResponse = jsonDecode(response.body);
-      } catch (e) {
-        debugPrint('JSON Parsing Error: $e');
-        Get.snackbar('Error', 'Invalid server response format.');
-        return;
-      }
-
-      debugPrint('Parsed Response: $parsedResponse');
-
-      if (response.statusCode == 200 &&
-          parsedResponse is Map<String, dynamic>) {
-        if (parsedResponse['success'] == true ||
-            parsedResponse.containsKey('message')) {
-          Get.snackbar('Success',
-              parsedResponse['message'] ?? 'User type successfully set.');
-          Get.toNamed('/create-account');
-        } else {
-          String errorMessage = parsedResponse['message'] ??
-              'Failed to set user type. Please try again.';
-          Get.snackbar('Error', errorMessage);
-        }
-      } else if (response.statusCode == 409) {
-        String errorMessage =
-            parsedResponse['message'] ?? 'This email is already registered.';
-        Get.snackbar('Error', errorMessage);
-      } else {
-        String errorMessage = parsedResponse['detail'] ??
-            'Failed to set user type. Please check your input.';
-        Get.snackbar('Error', errorMessage);
-      }
-    } catch (e) {
-      debugPrint('Error calling the backend: $e');
-      Get.snackbar('Error', 'An error occurred. Please try again.');
-    } finally {
-      isLoading.value = false;
-    }
-  }
-// Register Vetenarian Stage 2
-
-Future<void> registerVeterinarianStageTwo() async {
-    isLoading(true);
-
-    try {
-      var response = await ApiService().post(
-        'https://vetkonect.com/backend/public/api/web/v2/registerVeterinarian',
-        {
-          "stage": '2',
-          'email': email.value,
-          "first_name": firstName.value,
-          'last_name': lastName.value,
-          'phone_number': phoneNumber.value,
-          'address': adrress.value,
-          'vet_number': vetNumber,
-          'speciality[0]':
-          'speciality[1]':
-          'speciality[2]':
-          
-        },
-        Client(),
-        "",
-      );
-
-      debugPrint('Raw Response Body: ${response.body}');
-
-      var parsedResponse;
-      try {
-        parsedResponse = jsonDecode(response.body);
-      } catch (e) {
-        debugPrint('JSON Parsing Error: $e');
-        Get.snackbar('Error', 'Invalid server response format.');
-        return;
-      }
-
-      debugPrint('Parsed Response: $parsedResponse');
-
-      if (response.statusCode == 200 &&
-          parsedResponse is Map<String, dynamic>) {
-        if (parsedResponse['success'] == true ||
-            parsedResponse.containsKey('message')) {
-          Get.snackbar('Success',
-              parsedResponse['message'] ?? 'User type successfully set.');
-          Get.toNamed('/create-account');
-        } else {
-          String errorMessage = parsedResponse['message'] ??
-              'Failed to set user type. Please try again.';
-          Get.snackbar('Error', errorMessage);
-        }
-      } else if (response.statusCode == 409) {
-        String errorMessage =
-            parsedResponse['message'] ?? 'This email is already registered.';
-        Get.snackbar('Error', errorMessage);
-      } else {
-        String errorMessage = parsedResponse['detail'] ??
-            'Failed to set user type. Please check your input.';
-        Get.snackbar('Error', errorMessage);
-      }
-    } catch (e) {
-      debugPrint('Error calling the backend: $e');
-      Get.snackbar('Error', 'An error occurred. Please try again.');
-    } finally {
-      isLoading.value = false;
-    }
-  }

@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/about', page: () => AboutPage()),
          GetPage(name: '/Pets-livestock', page: () => PetsLivestockScreen()),
         GetPage(name: '/signUp', page: () => BasicUserSignUp()),
-        GetPage(name: '/Vet-account', page: () => ProfessionalDetailsScreen()),
+        GetPage(name: '/Vet-account', page: () => VetCreateAcctScreen()),
         GetPage(name: '/disease-prdictor', page: () => DiseasePredictorScreen())
       ],
     );
