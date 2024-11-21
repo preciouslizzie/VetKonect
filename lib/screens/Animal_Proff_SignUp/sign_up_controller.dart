@@ -69,7 +69,7 @@ class ProffSignUpController extends GetxController {
 
       // Stage 2: Additional details
       var stage2Response = await http.post(
-        Uri.parse('$baseUrl/registerVeterinarian?stage=2'),
+        Uri.parse('$baseUrl/registerVeterinarian?stage=2'),;
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'email': email,
