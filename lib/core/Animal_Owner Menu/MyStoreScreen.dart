@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-
+import '../../screens/login/login_controller.dart';
 import 'web_view_controller.dart';
 
 class MyStoreScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
   void initState() {
     super.initState();
     _checkInitialConnectivity();
-    _webViewController = _createWebViewController();
+    _initializeWebView();
 
     Connectivity().onConnectivityChanged.listen((status) {
       setState(() {
@@ -31,8 +31,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
       });
 
       if (_isConnected) {
-        _webViewController.loadRequest(
-            Uri.parse('hhttps://www.vetkonect.com/animal-owner-stores'));
+        _reloadWebView();
       }
     });
   }
@@ -44,11 +43,45 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
     });
   }
 
+  Future<void> _initializeWebView() async {
+    final token = await LoginController().getAuthToken(); 
+    _webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageFinished: (url) {
+            Future.delayed(const Duration(milliseconds: 700), () {
+              _webViewController.runJavaScript("""
+                document.querySelectorAll('.flex.items-center.flex-col.gap-1').forEach(item => {
+                  if (item) {
+                    item.style.display = 'none';
+                  }
+                });
+              """);
+            });
+            setState(() {
+              _isLoading = false;
+            });
+          },
+        ),
+      )
+      ..loadRequest(
+        Uri.parse('https://www.vetkonect.com/animal-owner-stores?token=$token'),
+      );
+  }
+
+  void _reloadWebView() {
+    if (_isConnected) {
+      _webViewController.loadRequest(
+          Uri.parse('https://www.vetkonect.com/animal-owner-stores'));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(" Home "),
+        title: const Text("Store"),
       ),
       body: Stack(
         children: [
@@ -84,31 +117,5 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
         ],
       ),
     );
-  }
-
-  WebViewController _createWebViewController() {
-    final controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageFinished: (url) {
-            Future.delayed(const Duration(milliseconds: 700), () {
-              _webViewController.runJavaScript("""
-                document.querySelectorAll('.flex.items-center.flex-col.gap-1').forEach(item => {
-                  if (item) {
-                    item.style.display = 'none';
-                  }
-                });
-              """);
-            });
-            setState(() {
-              _isLoading = false;
-            });
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse('https://www.vetkonect.com/animal-owner-stores'));
-
-    return controller;
   }
 }

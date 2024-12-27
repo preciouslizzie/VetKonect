@@ -86,19 +86,24 @@ class LoginController extends GetxController {
       if (response.statusCode == 200 &&
           parsedResponse is Map<String, dynamic>) {
         if (parsedResponse.containsKey('email')) {
+          // Save token for WebView
+          if (parsedResponse.containsKey('token')) {
+            await saveAuthToken(parsedResponse['token']);
+          }
+
           Get.snackbar('Success', 'Login Successful');
           Get.offAllNamed('/dashboard');
         } else {
           // Handle server error responses or failed login attempts
-          String errorMessage = parsedResponse['message'] ??
-              parsedResponse['detail'] ??
+          String errorMessage = parsedResponse['message'] ?? 
+              parsedResponse['detail'] ?? 
               'Login failed. Please try again.';
           Get.snackbar('Error', errorMessage);
         }
       } else {
         Get.snackbar(
             'Error',
-            parsedResponse['detail'] ??
+            parsedResponse['detail'] ?? 
                 'Login failed. Please check your credentials.');
       }
     } catch (e) {
@@ -109,57 +114,67 @@ class LoginController extends GetxController {
     }
   }
 
-
-//  forget password function
-
-Future<void> resetPassword() async {
-  if (email.value.isEmpty || !GetUtils.isEmail(email.value)) {
-    errorMessage.value = "Please enter a valid email address.";
-    return;
-  }
-
-  isLoading(true); // Set loading to true
-  try {
-    var response = await ApiService().post(
-      'https://vetkonect.com/backend/public/api/web/v2/forgot-password',
-      {"email": email.value},
-      Client(),
-      "",
-    );
-
-    dynamic parsedResponse;
-    try {
-      parsedResponse = jsonDecode(response.body);
-    } catch (e) {
-      debugPrint("JSON Parsing Error: $e");
-      errorMessage.value = "Unexpected server response. Please try again.";
+  // forget password function
+  Future<void> resetPassword() async {
+    if (email.value.isEmpty || !GetUtils.isEmail(email.value)) {
+      errorMessage.value = "Please enter a valid email address.";
       return;
     }
 
-    // Handle response
-    if (response.statusCode == 200) {
-      if (parsedResponse['success'] == true) {
-        successMessage.value =
-            "A password reset link has been sent to ${email.value}.";
-      } else {
-        errorMessage.value = parsedResponse['message'] ??
-            "Reset password failed. Please try again.";
-      }
-    } else {
-      errorMessage.value = parsedResponse['message'] ??
-          "Failed to send reset password link. Please check your email.";
-    }
-  } catch (e) {
-    debugPrint('Reset Password Error: $e');
-    errorMessage.value = "An error occurred while resetting the password.";
-  } finally {
-    isLoading(false); 
-  }
-}
-}
+    isLoading(true); // Set loading to true
+    try {
+      var response = await ApiService().post(
+        'https://vetkonect.com/backend/public/api/web/v2/forgot-password',
+        {"email": email.value},
+        Client(),
+        "",
+      );
 
-Future<void> saveLoginStatus() async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setBool('isLoggedIn', true);
-  await prefs.setString('userEmail', 'example@gmail.com'); // Save any other details
+      dynamic parsedResponse;
+      try {
+        parsedResponse = jsonDecode(response.body);
+      } catch (e) {
+        debugPrint("JSON Parsing Error: $e");
+        errorMessage.value = "Unexpected server response. Please try again.";
+        return;
+      }
+
+      // Handle response
+      if (response.statusCode == 200) {
+        if (parsedResponse['success'] == true) {
+          successMessage.value = 
+              "A password reset link has been sent to ${email.value}.";
+        } else {
+          errorMessage.value = parsedResponse['message'] ?? 
+              "Reset password failed. Please try again.";
+        }
+      } else {
+        errorMessage.value = parsedResponse['message'] ?? 
+            "Failed to send reset password link. Please check your email.";
+      }
+    } catch (e) {
+      debugPrint('Reset Password Error: $e');
+      errorMessage.value = "An error occurred while resetting the password.";
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  Future<void> saveLoginStatus() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true);
+    await prefs.setString('userEmail', 'example@gmail.com'); // Save any other details
+  }
+
+  // Save the auth token for WebView usage
+  Future<void> saveAuthToken(String token) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('authToken', token);
+  }
+
+  // Retrieve the auth token for WebView usage
+  Future<String?> getAuthToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('authToken');
+  }
 }
