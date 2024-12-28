@@ -40,7 +40,7 @@ dependencies:
   flutter_facebook_auth: ^7.1.1
   connectivity_plus: ^6.1.1
   keep_screen_on: ^3.0.0
-  flutter_launcher_icons: ^0.14.2
+  flutter_launcher_icons: ^0.13.1
 
 flutter_icons:
   android: true

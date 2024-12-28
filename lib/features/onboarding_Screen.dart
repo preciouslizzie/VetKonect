@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../screens/login/login_view.dart';
+import '../dashboard/dashborad_page/dashboard_page.dart';
 import 'onbording_content.dart';
-
 
 class Onbording extends StatefulWidget {
   const Onbording({super.key});
@@ -46,26 +46,36 @@ class _OnbordingState extends State<Onbording> {
     });
   }
 
+  Future<void> _navigateAfterOnboarding() async {
+    _timer?.cancel(); 
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+    if (isLoggedIn) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const DashboardScreen(userDetails: {})),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 2.0),
           child: Column(
             children: [
               Align(
                 alignment: Alignment.topRight,
                 child: TextButton(
-                  onPressed: () {
-                    _timer?.cancel();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
-                      ),
-                    );
-                  },
+                  onPressed: _navigateAfterOnboarding, 
                   child: const Text(
                     'Skip',
                     style: TextStyle(fontSize: 22, color: Colors.green),
@@ -87,12 +97,13 @@ class _OnbordingState extends State<Onbording> {
                       child: Column(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(35),
+                            borderRadius: BorderRadius.circular(15),
                             child: Image.asset(
                               contents[i].asset,
                               height: 300,
                               width: double.infinity,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.cover
+                              ,
                             ),
                           ),
                           const Spacer(),
@@ -134,19 +145,13 @@ class _OnbordingState extends State<Onbording> {
                 child: TextButton(
                   onPressed: () {
                     if (currentIndex == contents.length - 1) {
-                      _timer
-                          ?.cancel(); // Cancel the timer when reaching the end
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ),
+                      _navigateAfterOnboarding(); 
+                    } else {
+                      _controller.nextPage(
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.bounceIn,
                       );
                     }
-                    _controller.nextPage(
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.bounceIn,
-                    );
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Theme.of(context).primaryColor,
