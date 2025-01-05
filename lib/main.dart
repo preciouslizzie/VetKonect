@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/', page: () => const Onbording()),
         GetPage(name: '/login', page: () => LoginScreen()),
         GetPage(
-            name: '/create-account', page: () => const AnimalOwnerAccount()),
+            name: '/create-account', page: () =>  AnimalOwnerAccount()),
         GetPage(
           name: '/dashboard',
           page: () => const DashboardScreen(userDetails: {}),
@@ -67,13 +67,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/settings', page: () => const SettingScreen()),
         GetPage(
           name: '/profile',
-          page: () => const UserProfilePage(
-              firstName: '',
-              lastName: '',
-              phone: '',
-              address: '',
-              category: '',
-              country: ''),
+          page: () =>  UserProfilePage(userDetails: {},
+              ),
         ),
         GetPage(name: '/about', page: () => const AboutPage()),
         GetPage(name: '/Pets-livestock', page: () => PetsLivestockScreen()),

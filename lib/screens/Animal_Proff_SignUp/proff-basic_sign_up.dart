@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../config/theme.dart';
 import '../../features/customscaffold.dart';
+import 'proffesional_screen.dart';
 import 'sign_up_controller.dart';
-
 
 class ProffBasicSignUp extends StatefulWidget {
   final ProffSignUpController signUpController =
@@ -61,6 +60,10 @@ class _ProffBasicSignUp extends State<ProffBasicSignUp> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
+                          }
+                          if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+                              .hasMatch(value)) {
+                            return 'Please enter a valid Email address';
                           }
                           return null;
                         },
@@ -133,9 +136,10 @@ class _ProffBasicSignUp extends State<ProffBasicSignUp> {
                                   onPressed: () {
                                     if (_formSignInKey.currentState!
                                         .validate()) {
-                                      // Call the Stage One Sign-Up Method
                                       widget.signUpController
                                           .registerVeterinarianStageOne();
+
+                                      Get.to(() => const VetCreateAcctScreen());
                                     }
                                   },
                                   child: const Text(

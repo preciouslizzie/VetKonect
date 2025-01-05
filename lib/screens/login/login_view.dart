@@ -204,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               horizontal: 10,
                             ),
                             child: Text(
-                              'Sign up with',
+                              'Or Login With',
                               style: TextStyle(
                                 color: Colors.black45,
                               ),
@@ -222,48 +222,34 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 25.0,
                       ),
                         Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [
-    // Facebook Login Button
-    IconButton(
-      icon: const Icon(
-        FontAwesomeIcons.facebook,
-        color: Colors.blue,
-        size: 30.0,
-      ),
-      onPressed: () => socialMediaController.loginWithFacebook(),
-    ),
-    // Google Login Button
-    IconButton(
-      icon: const Icon(
-        FontAwesomeIcons.google,
-        color: Colors.red,
-        size: 30.0,
-      ),
-      onPressed: () => socialMediaController.loginWithGoogle(),
-    ),
-    // LinkedIn Login Button
-    IconButton(
-      icon: const Icon(
-        FontAwesomeIcons.linkedin,
-        color: Color.fromARGB(255, 1, 82, 147),
-        size: 30.0,
-      ),
-      onPressed: () => socialMediaController.loginWithLinkedIn(),
-    ),
-    // Apple Login Button
-    IconButton(
-      icon: const Icon(
-        FontAwesomeIcons.apple,
-        color: Colors.black,
-        size: 30.0,
-      ),
-      onPressed: () => socialMediaController.loginWithApple(),
-    ),
-  ],
-),
-
-                      const SizedBox(height: 25.0),
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                            onPressed: () => socialMediaController.loginWithFacebook(), 
+                          icon: const Icon(
+                            FontAwesomeIcons.facebook, 
+                            color: Colors.blue,
+                            size: 35.0,)),
+                            IconButton(
+                            onPressed: () => socialMediaController.loginWitGoogle(), 
+                          icon: const Icon(
+                            FontAwesomeIcons.google, 
+                            color: Colors.red,
+                            size: 35.0,)),
+                            IconButton(
+                            onPressed: () => socialMediaController.loginWithLinkedIn(), 
+                          icon: const Icon(
+                            FontAwesomeIcons.linkedin, 
+                            color:Color.fromARGB(255, 1, 82, 147),
+                            size: 35.0,)),
+                            IconButton(
+                            onPressed: () => socialMediaController.loginWithApple(), 
+                          icon: const Icon(
+                            FontAwesomeIcons.apple, 
+                            color: Colors.black,
+                            size: 35.0,))
+                        ],                      ),
+                       const SizedBox(height: 25.0),
 
                       // Sign Up Option
                       Row(

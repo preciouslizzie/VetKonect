@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'proffesional_screen.dart';
+import 'proff-basic_sign_up.dart';
 import 'sign_up_controller.dart';
 
 class AnimalHealthProSelectionScreen extends StatelessWidget {
@@ -29,7 +28,7 @@ class AnimalHealthProSelectionScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       controller.registerVeterinarianStageOne();
-                      Get.to(() => VetCreateAcctScreen());
+                      Get.to(() => ProffBasicSignUp());
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -63,7 +62,7 @@ class AnimalHealthProSelectionScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       controller.registerVeterinarianStageOne();
-                      Get.to(() => VetCreateAcctScreen());
+                      Get.to(() => ProffBasicSignUp());
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 20),

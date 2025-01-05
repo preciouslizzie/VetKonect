@@ -28,9 +28,7 @@ class SignUpScreen extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                userTypeController.setUserType(
-                  '',
-                );
+                
                 Get.to(() => UserTypeSelectionScreen());
               },
               child: Container(
@@ -62,9 +60,7 @@ class SignUpScreen extends StatelessWidget {
             const SizedBox(height: 30),
             GestureDetector(
               onTap: () {
-                userTypeController.setUserType(
-                  '',
-                );
+                
                 Get.to(() => AnimalHealthProSelectionScreen());
               },
               child: Container(

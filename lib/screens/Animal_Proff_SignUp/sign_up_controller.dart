@@ -31,14 +31,7 @@ class ProffSignUpController extends GetxController {
         }),
       );
 
-      if (response.statusCode == 200) {
-        Get.snackbar('Success', 'Stage 1 completed. Proceed to Stage 2.',
-            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
-      } else {
-        var errorMessage = _parseError(response);
-        Get.snackbar('Error', errorMessage,
-            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
-      }
+      
     } catch (e) {
       Get.snackbar(
           'Error', 'An error occurred during Stage 1. Please try again.',
@@ -68,7 +61,7 @@ class ProffSignUpController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        Get.snackbar('Success', 'Stage 2 completed. Proceed to Stage 3.',
+        Get.snackbar('Success', '',
             snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
       } else {
         var errorMessage = _parseError(response);
@@ -100,7 +93,7 @@ class ProffSignUpController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        Get.snackbar('Success', 'Registration completed!',
+        Get.snackbar('Success', '',
             snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
         Get.toNamed('/create-account');
       } else {

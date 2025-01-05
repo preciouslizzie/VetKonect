@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-
 import '../../../config/theme.dart';
 import '../../../features/customscaffold.dart';
 import 'user_controller.dart';
@@ -53,6 +53,8 @@ class _BasicUserSignUpState extends State<BasicUserSignUp> {
                         ),
                       ),
                       const SizedBox(height: 40.0),
+
+                      // Email Field
                       TextFormField(
                         onChanged: (value) =>
                             widget.signUpController.email.value = value,
@@ -60,11 +62,10 @@ class _BasicUserSignUpState extends State<BasicUserSignUp> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
                           }
-                          if (!RegExp(
-                            r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
-                            .hasMatch(value)) {
-                              return 'Invalid email address';
-                            }
+                          if (!RegExp(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+                              .hasMatch(value)) {
+                            return 'Invalid email address';
+                          }
                           return null;
                         },
                         decoration: InputDecoration(
@@ -82,6 +83,8 @@ class _BasicUserSignUpState extends State<BasicUserSignUp> {
                         ),
                       ),
                       const SizedBox(height: 25.0),
+
+                      // Password Field
                       Obx(
                         () => TextFormField(
                           obscureText: !widget.isPasswordVisible.value,
@@ -127,17 +130,24 @@ class _BasicUserSignUpState extends State<BasicUserSignUp> {
                         ),
                       ),
                       const SizedBox(height: 25.0),
+
+                      // Sign Up Button
                       SizedBox(
                         width: double.infinity,
                         child: Obx(
                           () => widget.signUpController.isLoading.value
                               ? const Center(child: CircularProgressIndicator())
                               : ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if (_formSignInKey.currentState!
                                         .validate()) {
-                                      widget.signUpController.registerAnimalOwnerStageOne();
-                                      Get.toNamed("/create-account");
+                                      await widget.signUpController
+                                          .registerAnimalOwnerStageOne();
+
+                                      if (!widget.signUpController.isLoading
+                                          .value) {
+                                        Get.toNamed("/create-account");
+                                      }
                                     }
                                   },
                                   child: const Text(
@@ -149,7 +159,10 @@ class _BasicUserSignUpState extends State<BasicUserSignUp> {
                                 ),
                         ),
                       ),
+
                       const SizedBox(height: 25.0),
+
+                      // Divider
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -174,7 +187,56 @@ class _BasicUserSignUpState extends State<BasicUserSignUp> {
                           ),
                         ],
                       ),
+
                       const SizedBox(height: 25.0),
+
+                      // Social Media Buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Get.snackbar('Coming Soon', 'Login with Facebook');
+                            },
+                            icon: const Icon(
+                              FontAwesomeIcons.facebook,
+                              color: Colors.blue,
+                              size: 35.0,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Get.snackbar('Coming Soon', 'Login with Google');
+                            },
+                            icon: const Icon(
+                              FontAwesomeIcons.google,
+                              color: Colors.red,
+                              size: 35.0,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Get.snackbar(
+                                  'Coming Soon', 'Login with LinkedIn');
+                            },
+                            icon: const Icon(
+                              FontAwesomeIcons.linkedin,
+                              color: Color.fromARGB(255, 1, 82, 147),
+                              size: 35.0,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Get.snackbar('Coming Soon', 'Login with Apple');
+                            },
+                            icon: const Icon(
+                              FontAwesomeIcons.apple,
+                              color: Colors.black,
+                              size: 35.0,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

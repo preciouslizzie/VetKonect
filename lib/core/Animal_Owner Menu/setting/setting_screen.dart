@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../screens/login/log_out.dart';
+
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
 
@@ -35,8 +37,8 @@ class SettingScreen extends StatelessWidget {
               icon: Icons.logout,
               title: 'Log Out',
               iconColor: Colors.orange,
-              onTap: () {
-                Get.toNamed('/login');
+              onTap: () async {
+                await Logout.execute(context); // Call the logout function
               },
             ),
           ],
@@ -52,12 +54,13 @@ class SettingsCard extends StatelessWidget {
   final VoidCallback onTap;
   final Color iconColor;
 
-  const SettingsCard(
-      {super.key,
-      required this.icon,
-      required this.title,
-      required this.onTap,
-      required this.iconColor});
+  const SettingsCard({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.onTap,
+    required this.iconColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +75,6 @@ class SettingsCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
           child: Row(
             children: [
-              // Icon with background circle
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -82,7 +84,6 @@ class SettingsCard extends StatelessWidget {
                 child: Icon(icon, size: 30, color: iconColor),
               ),
               const SizedBox(width: 20),
-              // Title Text
               Text(
                 title,
                 style: const TextStyle(

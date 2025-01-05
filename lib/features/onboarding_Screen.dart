@@ -49,7 +49,7 @@ class _OnbordingState extends State<Onbording> {
   Future<void> _navigateAfterOnboarding() async {
     _timer?.cancel(); 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? true;
 
     if (isLoggedIn) {
       Navigator.pushReplacement(
@@ -141,7 +141,7 @@ class _OnbordingState extends State<Onbording> {
               Container(
                 height: 60,
                 margin: const EdgeInsets.all(40),
-                width: double.infinity,
+                width: MediaQuery.of(context).size.width,
                 child: TextButton(
                   onPressed: () {
                     if (currentIndex == contents.length - 1) {

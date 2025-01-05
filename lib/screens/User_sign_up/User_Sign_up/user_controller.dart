@@ -1,42 +1,51 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
-
-import '../../../network folder/api_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserTypeController extends GetxController {
   var selectedUserType = ''.obs;
-  var selectedRole = ''.obs;
   var isLoading = false.obs;
   var email = ''.obs;
   var password = ''.obs;
-  var selectedImagePath = ''.obs;
-  var stage = 1.obs;
   var firstName = ''.obs;
   var lastName = ''.obs;
   var phoneNumber = ''.obs;
 
-  /// Handles API response parsing and common error handling
+  /// Save Auth Token
+  Future<void> saveAuthToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('authToken', token);
+  }
+
+  /// Retrieve Auth Token
+  Future<String?> getAuthToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('authToken');
+  }
+
+  /// Handle API Response
   void handleApiResponse(http.Response response, {String successMessage = ''}) {
     try {
       final parsedResponse = jsonDecode(response.body);
 
-      if (response.statusCode == 200 && parsedResponse['success'] == true) {
-        Get.snackbar('Success', parsedResponse['message'] ?? successMessage);
-        if (successMessage.isNotEmpty) Get.toNamed('/create-account');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        if (successMessage.isNotEmpty) {
+          Get.snackbar('Success', successMessage);
+        }
+        if (parsedResponse['token'] != null) {
+          saveAuthToken(parsedResponse['token']);
+        }
       } else {
-        final errorMessage = parsedResponse['message'] ??
-            'An error occurred. Please check your input.';
+        final errorMessage = parsedResponse['message'] ?? 'An error occurred.';
         Get.snackbar('Error', errorMessage);
       }
     } catch (e) {
-      debugPrint('Error parsing response: $e');
-      Get.snackbar('Error', 'Invalid server response. Please try again.');
+      Get.snackbar('Error', 'Invalid response format. Please try again.');
     }
   }
 
+  /// Post Request Helper
   Future<void> _postRequest({
     required String url,
     required Map<String, dynamic> body,
@@ -44,89 +53,80 @@ class UserTypeController extends GetxController {
   }) async {
     isLoading(true);
     try {
-      final response = await ApiService().post(url, body, Client(), "");
-      debugPrint('Response: ${response.body}');
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(body),
+      );
       handleApiResponse(response, successMessage: successMessage);
     } catch (e) {
-      debugPrint('Error during API call: $e');
       Get.snackbar('Error', 'An error occurred. Please try again.');
     } finally {
       isLoading(false);
     }
   }
 
-  // Sets the user type
-  Future<void> setUserType(String userType) async {
-    selectedUserType.value = userType;
-    await _postRequest(
-      url:
-          'https://vetkonect.com/backend/public/api/web/v2/registerAnimalOwner',
-      body: {"UserType": userType, "password": password.value},
-      successMessage: 'User type successfully set.',
-    );
-  }
-
-  /// Stage 1:
+  /// Register Stage 1
   Future<void> registerAnimalOwnerStageOne() async {
     await _postRequest(
       url:
           'https://vetkonect.com/backend/public/api/web/v2/registerAnimalOwner',
       body: {"stage": '1', "email": email.value, "password": password.value},
-      successMessage: 'Animal owner registration stage 1 complete.',
+      successMessage: 'Stage 1 registration successful.',
     );
   }
 
-  /// Stage 2:
+  /// Register Stage 2
   Future<void> registerAnimalOwnerStageTwo({
-  required String email,
-  required String firstName,
-  required String lastName,
-  required String phoneNumber,
-}) async {
-  final String url =
-      'https://vetkonect.com/backend/public/api/web/v2/registerAnimalOwner';
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+  }) async {
+    final url = 'https://vetkonect.com/backend/public/api/web/v2/registerAnimalOwner';
 
-  final Map<String, dynamic> body = {
-    "stage": '2',
-    "email": email,
-    "first_name": firstName,
-    "last_name": lastName,
-    "phone_number": phoneNumber,
-  };
+    final body = {
+      "stage": '2',
+      "email": email.value,
+      "first_name": firstName,
+      "last_name": lastName,
+      "phone_number": phoneNumber,
+    };
 
-  try {
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(body),
-    );
+    isLoading(true);
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(body),
+      );
 
-    if (response.statusCode == 201) {
-      print('Animal owner registration stage 2 complete.');
-    } else {
-      final error = jsonDecode(response.body)['message'] ?? 'Unknown error';
-      throw Exception('Failed to register: $error');
+      if (response.statusCode == 201) {
+        Get.snackbar('Success', 'Stage 2 registration successful.');
+      } else {
+        final error = jsonDecode(response.body)['message'] ?? 'Unknown error';
+        Get.snackbar('Error', error);
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'An error occurred: $e');
+    } finally {
+      isLoading(false);
     }
-  } catch (e) {
-    print('Error during registration: $e');
-    rethrow; // Rethrow the error to handle it at a higher level if needed
   }
-}
-  
 
-  /// Stage 3:
-  Future<void> registerAnimalOwnerStageThree() async {
+  /// Register Stage 3
+  Future<void> registerAnimalOwnerStageThree(String activationCode) async {
     await _postRequest(
       url:
           'https://vetkonect.com/backend/public/api/web/v2/registerAnimalOwner',
       body: {
         "stage": '3',
         "email": email.value,
-        "activation_code": password.value,
+        "activation_code": activationCode,
       },
-      successMessage: 'Animal owner account activated successfully.',
+      successMessage: 'Account activated successfully.',
     );
-  }
+  
+
 
   /// General signup for veterinarians (can add more roles if needed)
   Future<void> signUpVeterinarian() async {
@@ -142,4 +142,22 @@ class UserTypeController extends GetxController {
       successMessage: 'Veterinarian signup successful.',
     );
   }
+
+Future<void> saveAuthToken(String token) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('authToken', token);
+  }
+
+  Future<String?> getAuthToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('authToken');
+  }
+  }
+  Future<void> clearAuthToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('authToken');
+  }
+
+
 }
+
