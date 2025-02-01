@@ -1,6 +1,6 @@
 {
-    "name": "vet_konnect",
-    "short_name": "vet_konnect",
+    "name": "vetkonect",
+    "short_name": "vetkonect",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -82,7 +82,7 @@ class UserTypeController extends GetxController {
     required String lastName,
     required String phoneNumber,
   }) async {
-    final url = 'https://vetkonect.com/backend/public/api/web/v2/registerAnimalOwner';
+    const url = 'https://vetkonect.com/backend/public/api/web/v2/registerAnimalOwner';
 
     final body = {
       "stage": '2',

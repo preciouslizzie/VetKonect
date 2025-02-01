@@ -1,10 +1,10 @@
-name: vet_konnect
+name: vetkonect
 description: "A new Flutter project."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
-version: 1.0.0+1
+version: 1.0.0+7.2
 
 environment:
   sdk: ^3.5.4
@@ -41,11 +41,18 @@ dependencies:
   connectivity_plus: ^6.1.1
   keep_screen_on: ^3.0.0
   flutter_launcher_icons: ^0.13.1
+  package_rename: ^1.8.0
+  csc_picker: ^0.2.7
 
 flutter_icons:
   android: true
   ios: true
   image_path: 'assets/images/new_logo.png'
+
+android:
+  app_name: vetkonect
+  package_name: www.vetkonect.com
+  override_old_package: com.vetkonect
 
 dev_dependencies:
   flutter_test:

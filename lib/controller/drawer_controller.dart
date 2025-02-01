@@ -19,6 +19,9 @@ class DrawerController extends GetxController {
       case 'Settings':
         Get.toNamed('/settings');
         break;
+        case 'blog':
+        Get.toNamed('/blog');
+        break;
       default:
         Get.toNamed('/dashboard');
     }

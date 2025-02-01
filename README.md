@@ -1,4 +1,4 @@
-# vet_konnect
+# vetkonect
 
 A new Flutter project.
 

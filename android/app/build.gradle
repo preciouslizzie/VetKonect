@@ -1,7 +1,6 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
 }
 
@@ -12,7 +11,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.vet_konnect"
+    namespace = "www.vetkonect.com"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -26,7 +25,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.vet_konnect"
+        applicationId = "www.vetkonect.com"
         minSdk = 24
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -45,7 +44,7 @@ android {
     buildTypes {
         release {
             signingConfig = signingConfigs.release
-            minifyEnabled true // Enables code shrinking and obfuscation
+            minifyEnabled true 
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {

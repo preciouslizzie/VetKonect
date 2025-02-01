@@ -31,7 +31,7 @@ class _BlogPageState extends State<BlogPage> {
 
       if (_isConnected) {
         _webViewController.loadRequest(
-            Uri.parse('https://www.vetkonect.com/animal-owner-clients'));
+            Uri.parse('https://www.vetkonect.com/animal-owner-blog-post'));
       }
     });
   }
@@ -107,7 +107,7 @@ class _BlogPageState extends State<BlogPage> {
         ),
       )
       ..loadRequest(
-          Uri.parse('https://www.vetkonect.com/animal-owner-clients'));
+          Uri.parse('https://www.vetkonect.com/animal-owner-blog-post'));
 
     return controller;
   }

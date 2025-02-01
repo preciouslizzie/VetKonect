@@ -16,13 +16,13 @@ class CardSliderWidget extends StatelessWidget {
               "Browse our platform to discover vets, vet clinics, and vendors around you.",
               Assets.imgSearch,
               context,
-              "/search"),
+              "/home"),
           _buildCard(
               "Find Vets",
               "Connect with veterinarians nearby.",
               Assets.imgPetCare,
               context,
-              "/findVets" // replace with the appropriate route
+              "/blog"
               ),
           _buildCard(
               "Locate Vendors",

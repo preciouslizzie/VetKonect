@@ -1,4 +1,4 @@
-package com.example.vet_konnect
+package www.vetkonect.com
 
 import io.flutter.embedding.android.FlutterActivity
 

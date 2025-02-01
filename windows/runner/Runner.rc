@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "vet_konnect" "\0"
+            VALUE "FileDescription", "vetkonect" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "vet_konnect" "\0"
+            VALUE "InternalName", "vetkonect" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "vet_konnect.exe" "\0"
-            VALUE "ProductName", "vet_konnect" "\0"
+            VALUE "OriginalFilename", "vetkonect.exe" "\0"
+            VALUE "ProductName", "vetkonect" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

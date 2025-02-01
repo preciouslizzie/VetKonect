@@ -1,10 +1,8 @@
 import 'package:country_state_city_picker/country_state_city_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../core/Animal_Owner Menu/setting/profile_page.dart';
 import 'user_controller.dart';
 
-// ignore: must_be_immutable
 class AnimalOwnerAccount extends StatelessWidget {
   final UserTypeController userTypeController = Get.put(UserTypeController());
   final _formKey = GlobalKey<FormState>();
@@ -21,38 +19,35 @@ class AnimalOwnerAccount extends StatelessWidget {
   AnimalOwnerAccount({super.key});
 
   void _submitDetails(BuildContext context) async {
-    if (!_formKey.currentState!.validate()) {
+    if (!_formKey.currentState!.validate() ||
+        _selectedCountry == null ||
+        _selectedState == null ||
+        _selectedCity == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields, including country, state, and city')),
+      );
       return;
     }
 
-    // Bind user input to controller fields
-    userTypeController.firstName.value = _firstNameController.text;
-    userTypeController.lastName.value = _lastNameController.text;
-    userTypeController.phoneNumber.value = _phoneController.text;
+    try {
+      userTypeController.firstName.value = _firstNameController.text;
+      userTypeController.lastName.value = _lastNameController.text;
+      userTypeController.phoneNumber.value = _phoneController.text;
 
-    // Call API for stage 2 registration
-    await userTypeController.registerAnimalOwnerStageTwo(
-      firstName: userTypeController.firstName.value,
-      lastName: userTypeController.lastName.value,
-      phoneNumber: userTypeController.phoneNumber.value,
-    );
+      await userTypeController.registerAnimalOwnerStageTwo(
+        firstName: userTypeController.firstName.value,
+        lastName: userTypeController.lastName.value,
+        phoneNumber: userTypeController.phoneNumber.value,
+      );
 
-    if (userTypeController.isLoading.isFalse) {
-      final userDetails = {
-        'firstName': userTypeController.firstName.value,
-        'lastName': userTypeController.lastName.value,
-        'phone': userTypeController.phoneNumber.value,
-        'address': _addressController.text,
-        'country': _selectedCountry ?? 'Not selected',
-        'state': _selectedState ?? 'Not selected',
-        'city': _selectedCity ?? 'Not selected',
-      };
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => UserProfilePage(userDetails: userDetails),
-        ),
+      if (userTypeController.isLoading.isFalse) {
+        Get.toNamed('/activation-code', arguments: {
+          'email': userTypeController.email.value,
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
       );
     }
   }
@@ -126,15 +121,38 @@ class AnimalOwnerAccount extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 10),
-              SelectState(
-                onCountryChanged: (value) {
-                  _selectedCountry = value;
+              FormField<String>(
+                validator: (value) {
+                  if (_selectedCountry == null) return 'Please select a country';
+                  if (_selectedState == null) return 'Please select a state';
+                  if (_selectedCity == null) return 'Please select a city';
+                  return null;
                 },
-                onStateChanged: (value) {
-                  _selectedState = value;
-                },
-                onCityChanged: (value) {
-                  _selectedCity = value;
+                builder: (field) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SelectState(
+                        onCountryChanged: (value) {
+                          _selectedCountry = value;
+                          field.didChange(value);
+                        },
+                        onStateChanged: (value) {
+                          _selectedState = value;
+                          field.didChange(value);
+                        },
+                        onCityChanged: (value) {
+                          _selectedCity = value;
+                          field.didChange(value);
+                        },
+                      ),
+                      if (field.hasError)
+                        Text(
+                          field.errorText ?? '',
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                    ],
+                  );
                 },
               ),
               const SizedBox(height: 10),

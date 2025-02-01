@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../config/theme.dart';
 import '../../features/customscaffold.dart';
-import 'proffesional_screen.dart';
+import 'proffesional_acct_screen.dart';
 import 'sign_up_controller.dart';
 
 class ProffBasicSignUp extends StatefulWidget {
